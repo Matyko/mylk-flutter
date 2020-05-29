@@ -20,7 +20,8 @@ class TaskDao {
         result = await db.query(taskTable,
             columns: columns,
             where: query["where"],
-            whereArgs: query["args"]);
+            whereArgs: query["args"]
+        );
     } else {
       result = await db.query(taskTable, columns: columns);
     }
@@ -28,6 +29,7 @@ class TaskDao {
     List<Task> tasks = result.isNotEmpty
         ? result.map((item) => Task.fromDatabaseJson(item)).toList()
         : [];
+    tasks.sort((a,b) => a.due.compareTo(b.due));
     return tasks;
   }
 

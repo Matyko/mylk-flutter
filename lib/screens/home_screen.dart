@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
       message = "Good night <user>";
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(

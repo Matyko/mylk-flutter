@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
@@ -21,15 +22,19 @@ class _TaskListState extends State<TaskList> {
 
   @override
   Widget build(BuildContext context) {
-    taskBloc = BlocProvider
-        .of(context)
-        .taskBloc;
+    taskBloc = BlocProvider.of(context).taskBloc;
     if (widget.date != null) {
-      String dateString = widget.date.toIso8601String().split(":")[0];
+      String year = widget.date.year.toString();
+      String month = widget.date.month < 10 ? "0" + widget.date.month.toString() : widget.date.month.toString();
+      String day = widget.date.day < 10 ? "0" + widget.date.day.toString() : widget.date.day.toString();
+      String dateString = [year, month, day].join("-");
+      print(dateString);
       taskBloc.getTasks(query: {
         "where": "due like ?",
         "args": ["%$dateString%"]
       });
+    } else {
+      taskBloc.getTasks(query: null);
     }
     return StreamBuilder(
         stream: taskBloc.tasks,
@@ -40,13 +45,45 @@ class _TaskListState extends State<TaskList> {
               snapshot.data.length != 0) {
             snapshot.data.forEach((task) {
               list.add(Dismissible(
-                background: ListTile(
-                  leading: FaIcon(task.isDone == true
-                      ? FontAwesomeIcons.square
-                      : FontAwesomeIcons.checkSquare),
+                background: Container(
+                  color: Theme.of(context).primaryColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ListTile(
+                        leading: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            FaIcon(
+                              task.isDone == true
+                                  ? FontAwesomeIcons.square
+                                  : FontAwesomeIcons.checkSquare,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                secondaryBackground: ListTile(
-                  trailing: FaIcon(FontAwesomeIcons.trashAlt),
+                secondaryBackground: Container(
+                  color: Colors.red,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ListTile(
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            FaIcon(
+                              FontAwesomeIcons.trashAlt,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 confirmDismiss: (DismissDirection direction) async {
                   if (direction == DismissDirection.startToEnd) {
@@ -84,9 +121,14 @@ class _TaskListState extends State<TaskList> {
                   title: Text(task.title),
                   subtitle:
                       Text(DateFormat('yyyy-MM-dd - kk:mm').format(task.due)),
-                  leading: FaIcon(task.isDone == true
-                      ? FontAwesomeIcons.checkSquare
-                      : FontAwesomeIcons.square),
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FaIcon(task.isDone == true
+                          ? FontAwesomeIcons.checkSquare
+                          : FontAwesomeIcons.square),
+                    ],
+                  ),
                   onTap: () {
                     task.isDone = !task.isDone;
                     taskBloc.updateTask(task);
@@ -103,7 +145,8 @@ class _TaskListState extends State<TaskList> {
           } else {
             list.add(ListTile(
                 leading: FaIcon(FontAwesomeIcons.check),
-                title: Text("No tasks for today")));
+                title: Text(
+                    widget.date != null ? "No tasks for today" : "No tasks")));
           }
           return ListView(
             shrinkWrap: true,
