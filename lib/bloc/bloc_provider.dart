@@ -1,0 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:mylk/bloc/task_bloc.dart';
+
+class BlocProvider extends InheritedWidget {
+  const BlocProvider({
+    Key key,
+    @required this.taskBloc,
+    @required Widget child,
+  }) : assert(taskBloc != null),
+        assert(child != null),
+        super(key: key, child: child);
+
+  final TaskBloc taskBloc;
+
+  static BlocProvider of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<BlocProvider>();
+  }
+
+  @override
+  bool updateShouldNotify(BlocProvider oldWidget) {
+    return true;
+  }
+} 
