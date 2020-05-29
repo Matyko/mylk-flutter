@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
 import 'package:mylk/widgets/date_time_picker.dart';
 
 class TaskFormScreen extends StatefulWidget {
   final Task task;
-  final TaskBloc taskBloc;
 
-  TaskFormScreen(this.task, this.taskBloc);
+  TaskFormScreen(this.task);
 
   @override
   _TaskFormScreenState createState() => _TaskFormScreenState();
@@ -18,16 +18,20 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   final _formKey = GlobalKey<FormState>();
   DateTime _dateTime;
   String _title;
+  TaskBloc taskBloc;
 
   @override
   void initState() {
-    super.initState();
     _dateTime = widget.task != null ? widget.task.due : DateTime.now();
     _title = widget.task != null ? widget.task.title : "";
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    taskBloc = BlocProvider
+        .of(context)
+        .taskBloc;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -61,7 +65,9 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                             return null;
                           },
                           onSaved: (String value) {
-                            _title = value;
+                            setState(() {
+                              _title = value;
+                            });
                           },
                         ),
                         DateTimePickerField(_dateTime, (dateTime) {
@@ -85,11 +91,15 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
                                 if (widget.task == null) {
-                                  widget.taskBloc.addTask(Task(title: _title, due: _dateTime));
+                                  setState(() {
+                                    taskBloc.addTask(Task(title: _title, due: _dateTime));
+                                  });
                                 } else {
                                   widget.task.title = _title;
                                   widget.task.due = _dateTime;
-                                  widget.taskBloc.updateTask(widget.task);
+                                  setState(() {
+                                    taskBloc.updateTask(widget.task);
+                                  });
                                 }
                                 Navigator.pop(context);
                               }
@@ -110,7 +120,9 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                                 if (widget.task == null) {
                                   Navigator.pop(context);
                                 } else {
-                                  widget.taskBloc.deleteTaskById(widget.task.id);
+                                  setState(() {
+                                    taskBloc.deleteTaskById(widget.task.id);
+                                  });
                                 }
                                 Navigator.pop(context);
                             },

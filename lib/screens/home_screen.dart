@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mylk/bloc/bloc_provider.dart';
-import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/widgets/journal_carousel.dart';
 import 'package:mylk/widgets/task_list.dart';
 
@@ -16,9 +14,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var message;
-    TaskBloc taskBloc = BlocProvider
-        .of(context)
-        .taskBloc;
     final time = new DateTime.now().hour;
     if (time < 12) {
       message = "Good morning <user>";
@@ -80,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
               ),
-              getTaskList(taskBloc, DateTime.now()),
+              TaskList(date: DateTime.now()),
               SizedBox(
                 height: 20.0,
               ),

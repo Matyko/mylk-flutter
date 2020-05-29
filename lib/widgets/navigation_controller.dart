@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mylk/bloc/bloc_provider.dart';
-import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/screens/home_screen.dart';
 import 'package:mylk/screens/journals_screen.dart';
 import 'package:mylk/screens/task_form_screen.dart';
@@ -48,9 +46,6 @@ class _NavigationControllerState
 
   @override
   Widget build(BuildContext context) {
-    TaskBloc taskBloc = BlocProvider
-        .of(context)
-        .taskBloc;
     return Scaffold(
       bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
       body: PageStorage(
@@ -72,7 +67,7 @@ class _NavigationControllerState
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => TaskFormScreen(null, taskBloc))),
+                            builder: (_) => TaskFormScreen(null))),
               ),
             ),
             UnicornButton(

@@ -3,7 +3,10 @@ import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/widgets/navigation_controller.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(BlocProvider(taskBloc: TaskBloc(), child: MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -11,17 +14,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mylk',
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-          taskBloc: TaskBloc(),
-          child: NavigationController(),
-      ),
+      home: NavigationController(),
       theme: ThemeData(
-        primaryColor: Colors.teal,
-        backgroundColor: Colors.grey[300],
-        textTheme: TextTheme(
-          headline6: TextStyle(fontWeight: FontWeight.bold)
-        )
-      ),
+          primaryColor: Colors.teal,
+          backgroundColor: Colors.grey[300],
+          textTheme:
+              TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
     );
   }
 }
