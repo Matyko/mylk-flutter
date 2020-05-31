@@ -7,6 +7,7 @@ class TaskDao {
 
   Future<int> createTask(Task task) async {
     final db = await dbProvider.database;
+    task.createdAt = DateTime.now();
     var result = db.insert(taskTable, task.toDatabaseJson());
     return result;
   }
@@ -35,7 +36,7 @@ class TaskDao {
 
   Future<int> updateTask(Task task) async {
     final db = await dbProvider.database;
-
+    task.modifiedAt = DateTime.now();
     var result = await db.update(taskTable, task.toDatabaseJson(),
         where: "id = ?", whereArgs: [task.id]);
     return result;

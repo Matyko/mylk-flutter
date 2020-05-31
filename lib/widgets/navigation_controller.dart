@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/screens/home_screen.dart';
+import 'package:mylk/screens/journal_form_screen.dart';
 import 'package:mylk/screens/journals_screen.dart';
 import 'package:mylk/screens/task_form_screen.dart';
 import 'package:mylk/screens/tasks_screen.dart';
@@ -76,7 +77,10 @@ class _NavigationControllerState
                 heroTag: null,
                 mini: true,
                 child: FaIcon(FontAwesomeIcons.book),
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => JournalFormSceen(null))),
               ),
             )
           ],

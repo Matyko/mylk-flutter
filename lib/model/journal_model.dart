@@ -1,41 +1,28 @@
-import 'package:mylk/model/journal_entry_model.dart';
-
 class Journal {
+  int id;
   String title;
-  List<JournalEntry> journalEntries;
+  String backgroundImage;
   DateTime createdAt;
   DateTime modifiedAt;
-  String backGroundImage;
 
-  Journal(this.title, this.journalEntries, this.backGroundImage);
+  Journal({this.id, this.title, this.backgroundImage, this.createdAt, this.modifiedAt});
+
+  factory Journal.fromDatabaseJson(Map<String, dynamic> data) => Journal(
+      id: data['id'],
+      title: data['title'],
+      backgroundImage: data['background_image'],
+      createdAt: DateTime.parse(data['created_at']),
+      modifiedAt: data["modified_at"] != null ? DateTime.parse(data['modified_at']) : null,
+  );
+
+  Map<String, dynamic> toDatabaseJson() => {
+    "id": this.id,
+    "title": this.title,
+    "background_image": this.backgroundImage,
+    "created_at": this.createdAt.toIso8601String(),
+    "modified_at": this.modifiedAt != null ? this.modifiedAt.toIso8601String() : null
+  };
 }
 
-List<JournalEntry> journalEntries = [
-  JournalEntry(
-      "test journal entry 1",
-      "test content ......"
-  ),
-  JournalEntry(
-      "test journal entry 2",
-      "test content ......"
-  )
-];
 
-
-List<Journal> journals = [
-  Journal(
-      "test journal 1",
-      journalEntries,
-      "bg-1"
-  ),
-  Journal(
-      "test journal 2",
-      journalEntries,
-      "bg-2"
-  ),
-  Journal(
-      "test journal 2",
-      journalEntries,
-      "bg-3"
-  ),
-];
+List<Journal> journals = [];

@@ -28,7 +28,6 @@ class _TaskListState extends State<TaskList> {
       String month = widget.date.month < 10 ? "0" + widget.date.month.toString() : widget.date.month.toString();
       String day = widget.date.day < 10 ? "0" + widget.date.day.toString() : widget.date.day.toString();
       String dateString = [year, month, day].join("-");
-      print(dateString);
       taskBloc.getTasks(query: {
         "where": "due like ?",
         "args": ["%$dateString%"]

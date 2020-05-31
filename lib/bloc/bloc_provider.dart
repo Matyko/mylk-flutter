@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mylk/bloc/journal_entry_bloc.dart';
 import 'package:mylk/bloc/task_bloc.dart';
+import 'journal_bloc.dart';
 
 class BlocProvider extends InheritedWidget {
   const BlocProvider({
     Key key,
     @required this.taskBloc,
+    @required this.journalBloc,
+    @required this.journalEntryBloc,
     @required Widget child,
-  }) : assert(taskBloc != null),
+  })  : assert(taskBloc != null),
         assert(child != null),
         super(key: key, child: child);
 
   final TaskBloc taskBloc;
+  final JournalBloc journalBloc;
+  final JournalEntryBloc journalEntryBloc;
 
   static BlocProvider of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<BlocProvider>();
@@ -20,4 +26,4 @@ class BlocProvider extends InheritedWidget {
   bool updateShouldNotify(BlocProvider oldWidget) {
     return true;
   }
-} 
+}

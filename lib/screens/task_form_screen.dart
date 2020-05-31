@@ -29,9 +29,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    taskBloc = BlocProvider
-        .of(context)
-        .taskBloc;
+    taskBloc = BlocProvider.of(context).taskBloc;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -40,98 +38,104 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-        child: Form(
-          key: _formKey,
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0, vertical: 10.0),
+            child: Card(
               child: Column(
                 children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        TextFormField(
-                          initialValue: _title,
-                          decoration: InputDecoration(
-                              icon: FaIcon(FontAwesomeIcons.pencilAlt),
-                              labelText: 'Task description'),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            setState(() {
-                              _title = value;
-                            });
-                          },
-                        ),
-                        DateTimePickerField(_dateTime, (dateTime) {
-                          setState(() {
-                            _dateTime = dateTime;
-                          });
-                        })
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: TextFormField(
+                      initialValue: _title,
+                      decoration: InputDecoration(
+                          icon: FaIcon(FontAwesomeIcons.pencilAlt),
+                          labelText: 'Task description'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        setState(() {
+                          _title = value;
+                        });
+                      },
                     ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      SizedBox(
-                        width: double.infinity,
-                        child: FlatButton(
-                            color: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
-                                if (widget.task == null) {
-                                  setState(() {
-                                    taskBloc.addTask(Task(title: _title, due: _dateTime));
-                                  });
-                                } else {
-                                  widget.task.title = _title;
-                                  widget.task.due = _dateTime;
-                                  setState(() {
-                                    taskBloc.updateTask(widget.task);
-                                  });
-                                }
-                                Navigator.pop(context);
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: DateTimePickerField(_dateTime, (dateTime) {
+                      setState(() {
+                        _dateTime = dateTime;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FlatButton(
+                          color: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              if (widget.task == null) {
+                                setState(() {
+                                  taskBloc
+                                      .addTask(Task(title: _title, due: _dateTime));
+                                });
+                              } else {
+                                widget.task.title = _title;
+                                widget.task.due = _dateTime;
+                                setState(() {
+                                  taskBloc.updateTask(widget.task);
+                                });
                               }
-                            },
-                            child: Text(
-                              widget.task != null ? 'Update' : 'Submit',
-                              style: TextStyle(color: Colors.white),
-                            )),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FlatButton(
-                            color: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            onPressed: () {
-                                if (widget.task == null) {
-                                  Navigator.pop(context);
-                                } else {
-                                  setState(() {
-                                    taskBloc.deleteTaskById(widget.task.id);
-                                  });
-                                }
-                                Navigator.pop(context);
-                            },
-                            child: Text(
-                              widget.task != null ? 'Delete' : 'Cancel',
-                              style: TextStyle(color: Colors.red),
-                            )),
-                      ),
-                    ],
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Text(
+                            widget.task != null ? 'Update' : 'Submit',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FlatButton(
+                          color: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          onPressed: () {
+                            if (widget.task == null) {
+                              Navigator.pop(context);
+                            } else {
+                              setState(() {
+                                taskBloc.deleteTaskById(widget.task.id);
+                              });
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            widget.task != null ? 'Delete' : 'Cancel',
+                            style: TextStyle(color: Colors.red),
+                          )),
+                    ),
                   )
                 ],
               ),

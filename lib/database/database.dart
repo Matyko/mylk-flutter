@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 final taskTable = 'task';
+final journalTable = 'journal';
+final journalEntryTable = 'journal_entry';
 
 class DatabaseProvider {
   static final DatabaseProvider dbProvider = DatabaseProvider();
@@ -30,11 +32,30 @@ class DatabaseProvider {
 
   void initDB(Database database, int version) async {
     await database.execute("DROP TABLE IF EXISTS $taskTable");
+    await database.execute("DROP TABLE IF EXISTS $journalTable");
+    await database.execute("DROP TABLE IF EXISTS $journalEntryTable");
     await database.execute("CREATE TABLE $taskTable ("
         "id INTEGER PRIMARY KEY, "
         "title TEXT, "
         "due TEXT, "
+        "created_at TEXT, "
+        "modified_at TEXT, "
         "is_done INTEGER "
+        ")");
+    await database.execute("CREATE TABLE $journalTable ("
+        "id INTEGER PRIMARY KEY, "
+        "created_at TEXT, "
+        "modified_at TEXT, "
+        "title TEXT, "
+        "background_image TEXT "
+        ")");
+    await database.execute("CREATE TABLE $journalEntryTable ("
+        "id INTEGER PRIMARY KEY, "
+        "journal_id INTEGER, "
+        "created_at TEXT, "
+        "modified_at TEXT, "
+        "title TEXT, "
+        "content TEXT "
         ")");
   }
 }

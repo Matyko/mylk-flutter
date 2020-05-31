@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/model/journal_model.dart';
 
+import 'journal_form_screen.dart';
+
 class JournalScreen extends StatefulWidget {
   final Journal journal;
 
@@ -21,7 +23,7 @@ class _JournalScreenState extends State<JournalScreen> {
           Stack(
             children: <Widget>[
               Hero(
-                  tag: widget.journal.backGroundImage,
+                  tag: widget.journal.id,
                   child: Material(
                     type: MaterialType.transparency,
                     child: Container(
@@ -31,7 +33,7 @@ class _JournalScreenState extends State<JournalScreen> {
                           color: Colors.white,
                           image: DecorationImage(
                               image: AssetImage(
-                                  "assets/images/${widget.journal.backGroundImage}.jpg"),
+                                  "assets/images/${widget.journal.backgroundImage}.jpg"),
                               fit: BoxFit.cover),
                         ),
                         child: SafeArea(
@@ -49,6 +51,7 @@ class _JournalScreenState extends State<JournalScreen> {
                                     Container(
                                       width: 100.0,
                                       child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: <Widget>[
                                             CloseButton()
                                           ],
@@ -68,10 +71,27 @@ class _JournalScreenState extends State<JournalScreen> {
                                             )
                                           ],
                                         )),
-                                    SizedBox(width: 100.0,)
+                                    Container(
+                                      width: 100.0,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: FaIcon(FontAwesomeIcons.cog),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) => JournalFormSceen(widget.journal)));
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                
+
                               ],
                             ),
                           ),
