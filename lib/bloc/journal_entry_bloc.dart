@@ -11,27 +11,27 @@ class JournalEntryBloc {
   Map<String, dynamic>_query;
 
   JournalEntryBloc() {
-    getJournalEntrys(query: _query);
+    getJournalEntries(query: _query);
   }
 
-  getJournalEntrys({Map<String, dynamic> query}) async {
+  getJournalEntries({Map<String, dynamic> query}) async {
     _query = query;
     _journalEntryController.sink.add(await _journalEntryRepository.getAllJournalEntries(query: query));
   }
 
   addJournalEntry(JournalEntry journalEntry) async {
     await _journalEntryRepository.insertJournalEntry(journalEntry);
-    getJournalEntrys(query: _query);
+    getJournalEntries(query: _query);
   }
 
   updateJournalEntry(JournalEntry journalEntry) async {
     await _journalEntryRepository.updateJournalEntry(journalEntry);
-    getJournalEntrys(query: _query);
+    getJournalEntries(query: _query);
   }
 
   deleteJournalEntryById(int id) async {
     _journalEntryRepository.deleteJournalEntryById(id);
-    getJournalEntrys(query: _query);
+    getJournalEntries(query: _query);
   }
 
   dispose() {

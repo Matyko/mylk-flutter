@@ -10,16 +10,16 @@ class JournalEntry {
 
   factory JournalEntry.fromDatabaseJson(Map<String, dynamic> data) => JournalEntry(
       id: data['id'],
-      journalId: data['joutnal_id'],
-      title: data['title'],
+      journalId: data['journal_id'],
       content: data['content'],
+      title: data['title'],
       createdAt: DateTime.parse(data['created_at']),
       modifiedAt: data["modified_at"] != null ? DateTime.parse(data['modified_at']) : null,
   );
 
   Map<String, dynamic> toDatabaseJson() => {
     "id": this.id,
-    "joutnal_id": this.journalId,
+    "journal_id": this.journalId,
     "title": this.title,
     "content": this.content,
     "created_at": this.createdAt.toIso8601String(),
