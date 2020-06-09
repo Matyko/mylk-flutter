@@ -3,15 +3,20 @@ import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/journal_bloc.dart';
 import 'package:mylk/bloc/journal_entry_bloc.dart';
 import 'package:mylk/bloc/task_bloc.dart';
+import 'package:mylk/state/global_state.dart';
 import 'package:mylk/widgets/navigation_controller.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(BlocProvider(
-      taskBloc: TaskBloc(),
-      journalEntryBloc: JournalEntryBloc(),
-      journalBloc: JournalBloc(),
-      child: MyApp()));
+  runApp(ChangeNotifierProvider<GlobalState>(
+    create: (context) => GlobalState(),
+    child: BlocProvider(
+        taskBloc: TaskBloc(),
+        journalEntryBloc: JournalEntryBloc(),
+        journalBloc: JournalBloc(),
+        child: MyApp()),
+  ));
 }
 
 class MyApp extends StatelessWidget {

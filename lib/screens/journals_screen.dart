@@ -13,7 +13,7 @@ class JournalsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          JournalCarousel()
+          JournalCarousel(showSummary: true,)
         ],
       ),
     );

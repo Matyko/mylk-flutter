@@ -13,8 +13,8 @@ class JournalEntry {
       journalId: data['journal_id'],
       content: data['content'],
       title: data['title'],
-      createdAt: DateTime.parse(data['created_at']),
-      modifiedAt: data["modified_at"] != null ? DateTime.parse(data['modified_at']) : null,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(data['created_at']),
+      modifiedAt: data["modified_at"] != null ? DateTime.fromMillisecondsSinceEpoch(data['modified_at']) : null,
   );
 
   Map<String, dynamic> toDatabaseJson() => {
@@ -22,9 +22,7 @@ class JournalEntry {
     "journal_id": this.journalId,
     "title": this.title,
     "content": this.content,
-    "created_at": this.createdAt.toIso8601String(),
-    "modified_at": this.modifiedAt != null ? this.modifiedAt.toIso8601String() : null
+    "created_at": this.createdAt.millisecondsSinceEpoch,
+    "modified_at": this.modifiedAt != null ? this.modifiedAt.millisecondsSinceEpoch : null
   };
 }
-
-final List<JournalEntry> journalEntries = [];

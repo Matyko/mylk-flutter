@@ -3,12 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/journal_entry_bloc.dart';
 import 'package:mylk/model/journal_entry_model.dart';
+import 'package:mylk/model/journal_model.dart';
 
 class JournalEntryFormScreen extends StatefulWidget {
   final JournalEntry journalEntry;
-  final int journalId;
+  final Journal journal;
+  final Function onChange;
 
-  const JournalEntryFormScreen(this.journalEntry, this.journalId);
+  const JournalEntryFormScreen(this.journalEntry, this.journal, this.onChange);
 
   @override
   _JournalEntryFormScreenState createState() => _JournalEntryFormScreenState();
@@ -26,7 +28,7 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
   void initState() {
     _title = widget.journalEntry != null ? widget.journalEntry.title : "";
     _content = widget.journalEntry != null ? widget.journalEntry.content : "";
-    _journalId = widget.journalEntry != null ? widget.journalEntry.journalId : this.widget.journalId;
+    _journalId = widget.journalEntry != null ? widget.journalEntry.journalId : widget.journal.id;
     super.initState();
   }
 
@@ -35,7 +37,7 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
     _journalEntryBloc = BlocProvider.of(context).journalEntryBloc;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add journal'),
+        title: Text('Add entry to journal: ${widget.journal.title}'),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -112,36 +114,14 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
                             });
                           }
                           Navigator.pop(context);
+                          if (widget.onChange != null) {
+                            widget.onChange();
+                          }
                         }
                       },
                       child: Text(
                         widget.journalEntry != null ? 'Update' : 'Submit',
                         style: TextStyle(color: Colors.white),
-                      )),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FlatButton(
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      onPressed: () {
-                        if (widget.journalEntry == null) {
-                          Navigator.pop(context);
-                        } else {
-                          setState(() {
-                            _journalEntryBloc.deleteJournalEntryById(widget.journalEntry.id);
-                          });
-                        }
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        widget.journalEntry != null ? 'Delete' : 'Cancel',
-                        style: TextStyle(color: Colors.red),
                       )),
                 ),
               )

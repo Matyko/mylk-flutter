@@ -13,8 +13,8 @@ class Task {
     title: data['title'],
     due: DateTime.parse(data['due']),
     isDone: data['is_done'] == 0 ? false : true,
-    createdAt: DateTime.parse(data['created_at']),
-    modifiedAt: data["modified_at"] != null ? DateTime.parse(data['modified_at']) : null,
+    createdAt: DateTime.fromMillisecondsSinceEpoch(data['created_at']),
+    modifiedAt: data["modified_at"] != null ? DateTime.fromMillisecondsSinceEpoch(data['modified_at']) : null,
   );
 
   Map<String, dynamic> toDatabaseJson() => {
@@ -22,8 +22,8 @@ class Task {
     "title": this.title,
     "due": this.due.toIso8601String(),
     "is_done": this.isDone == true ? 1 : 0,
-    "created_at": this.createdAt.toIso8601String(),
-    "modified_at": this.modifiedAt != null ? this.modifiedAt.toIso8601String() : null
+    "created_at": this.createdAt.millisecondsSinceEpoch,
+    "modified_at": this.modifiedAt != null ? this.modifiedAt.millisecondsSinceEpoch : null
   };
 }
 

@@ -21,7 +21,9 @@ class TaskDao {
         result = await db.query(taskTable,
             columns: columns,
             where: query["where"],
-            whereArgs: query["args"]
+            whereArgs: query["args"],
+            limit: query["limit"],
+            orderBy: query["orderBy"] != null ? query["orderBy"] : "-created_at"
         );
     } else {
       result = await db.query(taskTable, columns: columns);

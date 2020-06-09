@@ -110,32 +110,6 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                             style: TextStyle(color: Colors.white),
                           )),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FlatButton(
-                          color: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          onPressed: () {
-                            if (widget.task == null) {
-                              Navigator.pop(context);
-                            } else {
-                              setState(() {
-                                taskBloc.deleteTaskById(widget.task.id);
-                              });
-                            }
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            widget.task != null ? 'Delete' : 'Cancel',
-                            style: TextStyle(color: Colors.red),
-                          )),
-                    ),
                   )
                 ],
               ),
