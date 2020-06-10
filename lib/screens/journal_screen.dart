@@ -24,20 +24,19 @@ class _JournalScreenState extends State<JournalScreen> {
         backgroundColor: Colors.white38,
         elevation: 0.0,
         leading: CloseButton(
-          color: Colors.black54,
+          color: Colors.black,
         ),
         centerTitle: true,
         title: Text(
           widget.journal.title,
           style: TextStyle(
               fontSize: 20.0,
-              color: Colors.black54,
-              fontWeight: FontWeight.bold),
+              color: Colors.black),
         ),
         actions: <Widget>[
           IconButton(
             icon: FaIcon(FontAwesomeIcons.cog),
-            color: Colors.black54,
+            color: Colors.black,
             onPressed: () {
               Navigator.pop(context);
               Navigator.push(

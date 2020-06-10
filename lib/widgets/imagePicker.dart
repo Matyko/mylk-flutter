@@ -40,8 +40,8 @@ class _ImagePickerState extends State<ImagePicker> {
           });
         },
         child: Container(
-          width: 50.0,
-          height: 50.0,
+          width: 100.0,
+          height: 200.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30.0),
             border: Border.all(

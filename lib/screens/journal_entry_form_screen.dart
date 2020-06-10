@@ -37,96 +37,102 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
     _journalEntryBloc = BlocProvider.of(context).journalEntryBloc;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add entry to journal: ${widget.journal.title}'),
+        title: Text('Add entry to journal: ${widget.journal.title}', style: TextStyle(fontFamily: 'Pacifico')),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: TextFormField(
-                  initialValue: _title,
-                  decoration: InputDecoration(
-                      icon: FaIcon(FontAwesomeIcons.pencilAlt),
-                      labelText: 'Title'),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    setState(() {
-                      _title = value;
-                    });
-                  },
+        child: Container(
+          padding: MediaQuery.of(context).viewInsets,
+          height: MediaQuery.of(context).size.height - 80.0,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: TextFormField(
+                    initialValue: _title,
+                    decoration: InputDecoration(
+                        labelText: 'Title'),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      setState(() {
+                        _title = value;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: TextFormField(
-                  initialValue: _content,
-                  decoration: InputDecoration(
-                      icon: FaIcon(FontAwesomeIcons.pencilAlt),
-                      labelText: 'Content'),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    setState(() {
-                      _content = value;
-                    });
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FlatButton(
-                      color: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                          if (widget.journalEntry == null) {
-                            setState(() {
-                              _journalEntryBloc.addJournalEntry(JournalEntry(
-                                  journalId: _journalId,
-                                  title: _title,
-                                  content: _content));
-                            });
-                          } else {
-                            widget.journalEntry.title = _title;
-                            widget.journalEntry.content = _content;
-                            setState(() {
-                              _journalEntryBloc.updateJournalEntry(widget.journalEntry);
-                            });
-                          }
-                          Navigator.pop(context);
-                          if (widget.onChange != null) {
-                            widget.onChange();
-                          }
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    child: TextFormField(
+                      maxLines: 99,
+                      initialValue: _content,
+                      decoration: InputDecoration(
+                          labelText: 'Content'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
                         }
+                        return null;
                       },
-                      child: Text(
-                        widget.journalEntry != null ? 'Update' : 'Submit',
-                        style: TextStyle(color: Colors.white),
-                      )),
+                      onSaved: (String value) {
+                        setState(() {
+                          _content = value;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              )
-            ],
-          )
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                        color: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            if (widget.journalEntry == null) {
+                              setState(() {
+                                _journalEntryBloc.addJournalEntry(JournalEntry(
+                                    journalId: _journalId,
+                                    title: _title,
+                                    content: _content));
+                              });
+                            } else {
+                              widget.journalEntry.title = _title;
+                              widget.journalEntry.content = _content;
+                              setState(() {
+                                _journalEntryBloc.updateJournalEntry(widget.journalEntry);
+                              });
+                            }
+                            Navigator.pop(context);
+                            if (widget.onChange != null) {
+                              widget.onChange();
+                            }
+                          }
+                        },
+                        child: Text(
+                          widget.journalEntry != null ? 'Update entry' : 'Create entry',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                )
+              ],
+            )
+          ),
         ),
       ),
     );

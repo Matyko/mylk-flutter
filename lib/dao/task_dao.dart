@@ -23,7 +23,7 @@ class TaskDao {
             where: query["where"],
             whereArgs: query["args"],
             limit: query["limit"],
-            orderBy: query["orderBy"] != null ? query["orderBy"] : "-created_at"
+            orderBy: query["orderBy"] != null ? query["orderBy"] : "-due"
         );
     } else {
       result = await db.query(taskTable, columns: columns);

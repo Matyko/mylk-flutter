@@ -16,6 +16,7 @@ dependencies:
   path_provider: ^0.5.0+1
   unicorndial: ^1.1.5
   provider: ^3.1.0
+  curved_navigation_bar: ^0.3.2
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +26,18 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Light.ttf
+          weight: 100
+        - asset: assets/fonts/Quicksand-Medium.ttf
+          weight: 200
+        - asset: assets/fonts/Quicksand-Regular.ttf
+        - asset: assets/fonts/Quicksand-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Quicksand-Bold.ttf
+          weight: 700

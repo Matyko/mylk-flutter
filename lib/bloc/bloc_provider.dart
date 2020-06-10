@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mylk/bloc/journal_entry_bloc.dart';
 import 'package:mylk/bloc/task_bloc.dart';
+import 'package:mylk/bloc/user_bloc.dart';
 import 'journal_bloc.dart';
 
 class BlocProvider extends InheritedWidget {
@@ -9,6 +10,7 @@ class BlocProvider extends InheritedWidget {
     @required this.taskBloc,
     @required this.journalBloc,
     @required this.journalEntryBloc,
+    @required this.userBloc,
     @required Widget child,
   })  : assert(taskBloc != null),
         assert(child != null),
@@ -17,6 +19,7 @@ class BlocProvider extends InheritedWidget {
   final TaskBloc taskBloc;
   final JournalBloc journalBloc;
   final JournalEntryBloc journalEntryBloc;
+  final UserBloc userBloc;
 
   static BlocProvider of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<BlocProvider>();

@@ -18,6 +18,15 @@ class JournalEntryList extends StatefulWidget {
 
 class _JournalEntryListState extends State<JournalEntryList> {
   JournalEntryBloc _journalEntryBloc;
+  int _currentWidgetId;
+
+  @override
+  void initState() {
+    _journalEntryBloc = JournalEntryBloc();
+    _currentWidgetId = widget.journal.id;
+    loadData();
+    super.initState();
+  }
 
   void loadData() {
     if (widget.journal != null) {
@@ -33,8 +42,10 @@ class _JournalEntryListState extends State<JournalEntryList> {
 
   @override
   Widget build(BuildContext context) {
-    _journalEntryBloc = JournalEntryBloc();
-    loadData();
+    if (widget.journal.id != _currentWidgetId) {
+      _currentWidgetId = widget.journal.id;
+      loadData();
+    }
     return StreamBuilder(
       stream: _journalEntryBloc.journalEntries,
       builder:
@@ -86,7 +97,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
               confirmDismiss: (DismissDirection direction) async {
                 if (direction == DismissDirection.startToEnd) {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => JournalEntryFormScreen(journalEntry, widget.journal, null)));
+                      MaterialPageRoute(builder: (_) => JournalEntryFormScreen(journalEntry, widget.journal, loadData)));
                   return false;
                 } else {
                   return await showDialog(
@@ -125,6 +136,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
           });
         }
         return ListView(
+          padding: EdgeInsets.only(bottom: 20.0),
           shrinkWrap: true,
           children: list,
         );

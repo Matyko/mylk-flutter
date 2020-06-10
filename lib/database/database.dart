@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 final taskTable = 'task';
 final journalTable = 'journal';
 final journalEntryTable = 'journal_entry';
+final userTable = 'user';
 
 class DatabaseProvider {
   static final DatabaseProvider dbProvider = DatabaseProvider();
@@ -34,10 +35,18 @@ class DatabaseProvider {
     await database.execute("DROP TABLE IF EXISTS $taskTable");
     await database.execute("DROP TABLE IF EXISTS $journalTable");
     await database.execute("DROP TABLE IF EXISTS $journalEntryTable");
+    await database.execute("DROP TABLE IF EXISTS $userTable");
+    await database.execute("CREATE TABLE $userTable ("
+        "id INTEGER PRIMARY KEY, "
+        "name TEXT, "
+        "email TEXT, "
+        "created_at INTEGER, "
+        "modified_at INTEGER "
+        ")");
     await database.execute("CREATE TABLE $taskTable ("
         "id INTEGER PRIMARY KEY, "
         "title TEXT, "
-        "due TEXT, "
+        "due INTEGER, "
         "created_at INTEGER, "
         "modified_at INTEGER, "
         "is_done INTEGER "

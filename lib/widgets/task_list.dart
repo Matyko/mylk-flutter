@@ -18,25 +18,32 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  TaskBloc taskBloc;
+  TaskBloc _taskBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final taskBloc = BlocProvider.of(context).taskBloc;
+    if (_taskBloc != taskBloc) {
+      _taskBloc = taskBloc;
+      if (widget.date != null) {
+        final int startOfDay = DateTime(widget.date.year, widget.date.month, widget.date.day).millisecondsSinceEpoch;
+        final int endOfDay = DateTime(widget.date.year, widget.date.month, widget.date.day, 23, 59, ).millisecondsSinceEpoch;
+        taskBloc.getTasks(query: {
+          "where": "due > ? AND due < ?",
+          "args": [startOfDay, endOfDay]
+        });
+      } else {
+        taskBloc.getTasks(query: null);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    taskBloc = BlocProvider.of(context).taskBloc;
-    if (widget.date != null) {
-      String year = widget.date.year.toString();
-      String month = widget.date.month < 10 ? "0" + widget.date.month.toString() : widget.date.month.toString();
-      String day = widget.date.day < 10 ? "0" + widget.date.day.toString() : widget.date.day.toString();
-      String dateString = [year, month, day].join("-");
-      taskBloc.getTasks(query: {
-        "where": "due like ?",
-        "args": ["%$dateString%"]
-      });
-    } else {
-      taskBloc.getTasks(query: null);
-    }
+    _taskBloc = BlocProvider.of(context).taskBloc;
     return StreamBuilder(
-        stream: taskBloc.tasks,
+        stream: _taskBloc.tasks,
         builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
           List<Widget> list = new List<Widget>();
           if (snapshot != null &&
@@ -87,7 +94,7 @@ class _TaskListState extends State<TaskList> {
                 confirmDismiss: (DismissDirection direction) async {
                   if (direction == DismissDirection.startToEnd) {
                     task.isDone = !task.isDone;
-                    taskBloc.updateTask(task);
+                    _taskBloc.updateTask(task);
                     return false;
                   } else {
                     return await showDialog(
@@ -113,7 +120,7 @@ class _TaskListState extends State<TaskList> {
                   }
                 },
                 onDismissed: (DismissDirection direction) {
-                  taskBloc.deleteTaskById(task.id);
+                  _taskBloc.deleteTaskById(task.id);
                 },
                 key: Key(task.title),
                 child: ListTile(
@@ -130,7 +137,7 @@ class _TaskListState extends State<TaskList> {
                   ),
                   onTap: () {
                     task.isDone = !task.isDone;
-                    taskBloc.updateTask(task);
+                    _taskBloc.updateTask(task);
                   },
                   onLongPress: () {
                     Navigator.push(

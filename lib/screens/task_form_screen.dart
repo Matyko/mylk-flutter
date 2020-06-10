@@ -33,42 +33,42 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text('Add task'),
+        title: Text('Add task', style: TextStyle(fontFamily: 'Pacifico'),),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0, vertical: 10.0),
-            child: Card(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    child: TextFormField(
-                      initialValue: _title,
-                      decoration: InputDecoration(
-                          icon: FaIcon(FontAwesomeIcons.pencilAlt),
-                          labelText: 'Task description'),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      onSaved: (String value) {
-                        setState(() {
-                          _title = value;
-                        });
-                      },
-                    ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: MediaQuery.of(context).viewInsets,
+          height: MediaQuery.of(context).size.height - 80.0,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
+                  child: TextFormField(
+                    initialValue: _title,
+                    decoration: InputDecoration(
+                        labelText: 'Task description'),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      setState(() {
+                        _title = value;
+                      });
+                    },
                   ),
-                  Padding(
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: DateTimePickerField(_dateTime, (dateTime) {
@@ -77,42 +77,42 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                       });
                     }),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FlatButton(
-                          color: Theme.of(context).primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
-                              if (widget.task == null) {
-                                setState(() {
-                                  taskBloc
-                                      .addTask(Task(title: _title, due: _dateTime));
-                                });
-                              } else {
-                                widget.task.title = _title;
-                                widget.task.due = _dateTime;
-                                setState(() {
-                                  taskBloc.updateTask(widget.task);
-                                });
-                              }
-                              Navigator.pop(context);
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                        color: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            if (widget.task == null) {
+                              setState(() {
+                                taskBloc
+                                    .addTask(Task(title: _title, due: _dateTime));
+                              });
+                            } else {
+                              widget.task.title = _title;
+                              widget.task.due = _dateTime;
+                              setState(() {
+                                taskBloc.updateTask(widget.task);
+                              });
                             }
-                          },
-                          child: Text(
-                            widget.task != null ? 'Update' : 'Submit',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    ),
-                  )
-                ],
-              ),
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text(
+                          widget.task != null ? 'Update' : 'Submit',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

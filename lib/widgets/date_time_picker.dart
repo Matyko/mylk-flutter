@@ -69,7 +69,6 @@ class _DateTimePickerFieldState extends State<DateTimePickerField> {
         child: AbsorbPointer(
           child: TextFormField(
             decoration: InputDecoration(
-                icon: FaIcon(FontAwesomeIcons.calendarAlt),
                 labelText: 'Task due'),
             controller: _controller,
             validator: (value) {

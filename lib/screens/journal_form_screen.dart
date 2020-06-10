@@ -34,103 +34,112 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text('Add journal'),
+        title: Text('Add journal', style: TextStyle(fontFamily: 'Pacifico')),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: TextFormField(
-                  initialValue: _title,
-                  decoration: InputDecoration(
-                      icon: FaIcon(FontAwesomeIcons.pencilAlt),
-                      labelText: 'Journal name'),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    setState(() {
-                      _title = value;
-                    });
-                  },
+        child: Container(
+          padding: MediaQuery.of(context).viewInsets,
+          height: MediaQuery.of(context).size.height - 80.0,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: ImagePicker(
+                    callback: (name) {
+                      setState(() {
+                        _backgroundImage = name;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              ImagePicker(
-                callback: (name) {
-                  setState(() {
-                    _backgroundImage = name;
-                  });
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FlatButton(
-                      color: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    child: TextFormField(
+                      initialValue: _title,
+                      decoration: InputDecoration(
+                          labelText: 'Journal name'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        setState(() {
+                          _title = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                        color: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            if (widget.journal == null) {
+                              setState(() {
+                                _journalBloc.addJournal(Journal(
+                                    title: _title,
+                                    backgroundImage: _backgroundImage));
+                              });
+                            } else {
+                              widget.journal.title = _title;
+                              widget.journal.backgroundImage = _backgroundImage;
+                              setState(() {
+                                _journalBloc.updateJournal(widget.journal);
+                              });
+                            }
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text(
+                          widget.journal != null ? 'Update journal' : 'Create journal',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FlatButton(
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        onPressed: () {
                           if (widget.journal == null) {
-                            setState(() {
-                              _journalBloc.addJournal(Journal(
-                                  title: _title,
-                                  backgroundImage: _backgroundImage));
-                            });
+                            Navigator.pop(context);
                           } else {
-                            widget.journal.title = _title;
-                            widget.journal.backgroundImage = _backgroundImage;
                             setState(() {
-                              _journalBloc.updateJournal(widget.journal);
+                              _journalBloc.deleteJournalById(widget.journal.id);
                             });
                           }
                           Navigator.pop(context);
-                        }
-                      },
-                      child: Text(
-                        widget.journal != null ? 'Update' : 'Submit',
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FlatButton(
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      onPressed: () {
-                        if (widget.journal == null) {
-                          Navigator.pop(context);
-                        } else {
-                          setState(() {
-                            _journalBloc.deleteJournalById(widget.journal.id);
-                          });
-                        }
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        widget.journal != null ? 'Delete' : 'Cancel',
-                        style: TextStyle(color: Colors.red),
-                      )),
-                ),
-              )
-            ],
+                        },
+                        child: Text(
+                          widget.journal != null ? 'Delete journal' : 'Cancel',
+                          style: TextStyle(color: Colors.red),
+                        )),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
