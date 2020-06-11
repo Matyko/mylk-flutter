@@ -13,12 +13,14 @@ class _TasksScreenState extends State<TasksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (!mounted) return;
-      setState(() {
-        _visible = true;
+    if (!_visible) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (!mounted) return;
+        setState(() {
+          _visible = true;
+        });
       });
-    });
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

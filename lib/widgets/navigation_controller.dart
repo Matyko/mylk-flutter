@@ -9,6 +9,7 @@ import 'package:mylk/screens/journal_form_screen.dart';
 import 'package:mylk/screens/journals_screen.dart';
 import 'package:mylk/screens/loading_screen.dart';
 import 'package:mylk/screens/setup_screen.dart';
+import 'package:mylk/screens/statistics_screen.dart';
 import 'package:mylk/screens/task_form_screen.dart';
 import 'package:mylk/screens/tasks_screen.dart';
 import 'package:mylk/state/global_state.dart';
@@ -25,8 +26,9 @@ class _NavigationControllerState extends State<NavigationController> {
     HomeScreen(key: PageStorageKey('home')),
     TasksScreen(key: PageStorageKey('tasks')),
     JournalsScreen(key: PageStorageKey('journals')),
+    StatisticsScreen(key: PageStorageKey('statistics')),
     SetupScreen(key: PageStorageKey('setup')),
-    LoadingScreen(key: PageStorageKey('loading'))
+    LoadingScreen(key: PageStorageKey('loading')),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -87,6 +89,17 @@ class _NavigationControllerState extends State<NavigationController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 FaIcon(FontAwesomeIcons.bookOpen,
+                    size: 20.0, color: Colors.white)
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: _selectedIndex == 3 ? 0 : 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                FaIcon(FontAwesomeIcons.chartLine,
                     size: 20.0, color: Colors.white)
               ],
             ),
@@ -189,7 +202,7 @@ class _NavigationControllerState extends State<NavigationController> {
           },
           blendMode: BlendMode.lighten,
           child: PageStorage(
-            child: pages[ready ? user != null ? _selectedIndex : 3 : 4],
+            child: pages[ready ? user != null ? _selectedIndex : 4 : 5],
             bucket: bucket,
           ),
         ),

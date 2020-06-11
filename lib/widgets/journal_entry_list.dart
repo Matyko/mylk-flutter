@@ -151,8 +151,13 @@ class _JournalEntryListState extends State<JournalEntryList> {
                 key: Key(journalEntry.id.toString()),
                 child: ListTile(
                   title: Text(journalEntry.title != null ? journalEntry.title : ""),
-                  subtitle: Text(
-                      journalEntry.content != null ? journalEntry.content : ""),
+                  subtitle: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          journalEntry.content != null ? journalEntry.content : ""),
+                    ),
+                  ),
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

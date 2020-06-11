@@ -30,12 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       message = "Good night,";
     }
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (!mounted) return;
-      setState(() {
-        _visible = true;
+    if (!_visible) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (!mounted) return;
+        setState(() {
+          _visible = true;
+        });
       });
-    });
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: AnimatedOpacity(

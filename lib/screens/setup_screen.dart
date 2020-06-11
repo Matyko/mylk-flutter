@@ -13,12 +13,14 @@ class _SetupScreenState extends State<SetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (!mounted) return;
-      setState(() {
-        _visible = true;
+    if (!_visible) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (!mounted) return;
+        setState(() {
+          _visible = true;
+        });
       });
-    });
+    }
     return AnimatedOpacity(
       opacity: _visible ? 1.0 : 0.0,
       duration: Duration(milliseconds: 300),

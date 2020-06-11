@@ -35,8 +35,8 @@ class MylkApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: NavigationController(),
       theme: ThemeData(
-          primaryColor: Colors.teal.shade400,
-          backgroundColor: Colors.teal.shade200,
+          primaryColor: Color(0xFFF99A9B),
+          backgroundColor: Color(0xFFFFEBEF),
           fontFamily: 'Quicksand',
           textTheme:
               TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),

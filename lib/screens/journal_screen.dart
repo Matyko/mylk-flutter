@@ -7,16 +7,11 @@ import 'package:mylk/widgets/journal_entry_list.dart';
 
 import 'journal_form_screen.dart';
 
-class JournalScreen extends StatefulWidget {
+class JournalScreen extends StatelessWidget {
   final Journal journal;
 
   JournalScreen(this.journal);
 
-  @override
-  _JournalScreenState createState() => _JournalScreenState();
-}
-
-class _JournalScreenState extends State<JournalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +24,7 @@ class _JournalScreenState extends State<JournalScreen> {
         ),
         centerTitle: true,
         title: Text(
-          widget.journal.title,
+          journal.title,
           style: TextStyle(fontSize: 20.0, color: Colors.black),
         ),
         actions: <Widget>[
@@ -41,7 +36,7 @@ class _JournalScreenState extends State<JournalScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => JournalFormSceen(widget.journal)));
+                      builder: (_) => JournalFormSceen(journal)));
             },
           )
         ],
@@ -51,13 +46,13 @@ class _JournalScreenState extends State<JournalScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => JournalEntryFormScreen(null, widget.journal, null)));
+                  builder: (_) => JournalEntryFormScreen(null, journal, null)));
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: FaIcon(FontAwesomeIcons.fileAlt),
       ),
       body: Hero(
-          tag: widget.journal.id,
+          tag: journal.id,
           child: Material(
             type: MaterialType.transparency,
             child: Container(
@@ -67,7 +62,7 @@ class _JournalScreenState extends State<JournalScreen> {
                   color: Colors.white,
                   image: DecorationImage(
                       image: AssetImage(
-                          "assets/images/${widget.journal.backgroundImage}.jpg"),
+                          "assets/images/${journal.backgroundImage}.jpg"),
                       fit: BoxFit.cover),
                 ),
                 child: SafeArea(
@@ -77,7 +72,7 @@ class _JournalScreenState extends State<JournalScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10.0)),
-                      child: JournalEntryList(widget.journal, null)),
+                      child: JournalEntryList(journal, null)),
                 )),
           )),
     );
