@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/bloc/user_bloc.dart';
 import 'package:mylk/model/user_model.dart';
+import 'package:mylk/screens/home_screen.dart';
 
 class UserForm extends StatefulWidget {
   final User user;
@@ -67,7 +67,6 @@ class _UserFormState extends State<UserForm> {
                           _userBloc.updateUser(widget.user);
                         });
                       }
-                      Navigator.pop(context);
                     }
                   },
                   child: Text(

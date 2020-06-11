@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
@@ -33,7 +32,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text('Add task', style: TextStyle(fontFamily: 'Pacifico'),),
+        title: Text('Add task'),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -52,6 +51,18 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                   child: TextFormField(
                     initialValue: _title,
                     decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white60,
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white54),
+                            borderRadius: BorderRadius.circular(10.0)
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white54),
+                            borderRadius: BorderRadius.circular(10.0)
+                        ),
                         labelText: 'Task description'),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -107,7 +118,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                           }
                         },
                         child: Text(
-                          widget.task != null ? 'Update' : 'Submit',
+                          widget.task != null ? 'Update' : 'Add task',
                           style: TextStyle(color: Colors.white),
                         )),
                   ),

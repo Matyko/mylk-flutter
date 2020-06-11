@@ -19,6 +19,7 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   TaskBloc _taskBloc;
+  DateTime _currentDate;
 
   @override
   void didChangeDependencies() {
@@ -46,10 +47,21 @@ class _TaskListState extends State<TaskList> {
         stream: _taskBloc.tasks,
         builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
           List<Widget> list = new List<Widget>();
+          _currentDate = null;
           if (snapshot != null &&
               snapshot.data != null &&
               snapshot.data.length != 0) {
             snapshot.data.forEach((task) {
+              if ((_currentDate == null
+                  || _currentDate.year != task.due.year
+                  || _currentDate.month != task.due.month
+                  || _currentDate.day != task.due.day
+              ) && widget.date == null) {
+                _currentDate = task.createdAt;
+                list.add(ListTile(
+                    title: Text(DateFormat('yyyy.MM.dd').format(task.due))
+                ));
+              }
               list.add(Dismissible(
                 background: Container(
                   color: Theme.of(context).primaryColor,

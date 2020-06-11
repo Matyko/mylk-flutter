@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/model/journal_model.dart';
+import 'package:mylk/screens/journal_entry_form_screen.dart';
 import 'package:mylk/widgets/journal_entry_list.dart';
 
 import 'journal_form_screen.dart';
@@ -29,9 +30,7 @@ class _JournalScreenState extends State<JournalScreen> {
         centerTitle: true,
         title: Text(
           widget.journal.title,
-          style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.black),
+          style: TextStyle(fontSize: 20.0, color: Colors.black),
         ),
         actions: <Widget>[
           IconButton(
@@ -46,6 +45,16 @@ class _JournalScreenState extends State<JournalScreen> {
             },
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => JournalEntryFormScreen(null, widget.journal, null)));
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: FaIcon(FontAwesomeIcons.fileAlt),
       ),
       body: Hero(
           tag: widget.journal.id,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class DateTimePickerField extends StatefulWidget {
@@ -69,6 +68,18 @@ class _DateTimePickerFieldState extends State<DateTimePickerField> {
         child: AbsorbPointer(
           child: TextFormField(
             decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white60,
+                labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white54),
+                    borderRadius: BorderRadius.circular(10.0)
+                ),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white54),
+                    borderRadius: BorderRadius.circular(10.0)
+                ),
                 labelText: 'Task due'),
             controller: _controller,
             validator: (value) {

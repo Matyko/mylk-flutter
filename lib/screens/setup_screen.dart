@@ -26,7 +26,7 @@ class _SetupScreenState extends State<SetupScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Welcome", style: TextStyle(fontSize: 20.0),),
+            Text("Welcome", style: TextStyle(fontSize: 30.0),),
             UserForm(null)
           ],
         )

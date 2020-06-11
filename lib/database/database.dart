@@ -63,6 +63,7 @@ class DatabaseProvider {
         "journal_id INTEGER, "
         "created_at INTEGER, "
         "modified_at INTEGER, "
+        "mood_id INTEGER, "
         "title TEXT, "
         "content TEXT "
         ")");

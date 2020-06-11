@@ -51,7 +51,7 @@ class _JournalCarouselState extends State<JournalCarousel> {
     JournalRepository journalRepository = JournalRepository();
     List<Journal> journals = await journalRepository.getAllJournals();
     if (journals != null && journals.length != 0) {
-      Provider.of<GlobalState>(context, listen: false).updateCurrentJournal(journals[0]);
+      Provider.of<JournalState>(context, listen: false).updateCurrentJournal(journals[0]);
     }
   }
 
@@ -66,7 +66,7 @@ class _JournalCarouselState extends State<JournalCarousel> {
     return Container(
         height: 300.0,
         padding: EdgeInsets.only(bottom: 10.0),
-        child: Consumer<GlobalState>(
+        child: Consumer<JournalState>(
           builder: (context, model, widget) => StreamBuilder(
               stream: _journalBloc.journals,
               builder:

@@ -10,14 +10,20 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ChangeNotifierProvider<GlobalState>(
-    create: (context) => GlobalState(),
-    child: BlocProvider(
-        taskBloc: TaskBloc(),
-        journalEntryBloc: JournalEntryBloc(),
-        journalBloc: JournalBloc(),
-        userBloc: UserBloc(),
-        child: MylkApp()),
+  runApp(ChangeNotifierProvider<JournalState>(
+    create: (context) => JournalState(),
+    child: ChangeNotifierProvider<UserState>(
+      create: (context) => UserState(),
+      child: ChangeNotifierProvider<JournalEntryState>(
+        create: (context) => JournalEntryState(),
+        child: BlocProvider(
+            taskBloc: TaskBloc(),
+            journalEntryBloc: JournalEntryBloc(),
+            journalBloc: JournalBloc(),
+            userBloc: UserBloc(),
+            child: MylkApp()),
+      ),
+    ),
   ));
 }
 
@@ -29,8 +35,8 @@ class MylkApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: NavigationController(),
       theme: ThemeData(
-          primaryColor: Colors.teal,
-          backgroundColor: Colors.grey[300],
+          primaryColor: Colors.teal.shade400,
+          backgroundColor: Colors.teal.shade200,
           fontFamily: 'Quicksand',
           textTheme:
               TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),

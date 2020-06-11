@@ -96,10 +96,11 @@ class _NavigationControllerState extends State<NavigationController> {
 
   @override
   Widget build(BuildContext context) {
-    final globalState = Provider.of<GlobalState>(context);
+    final userState = Provider.of<UserState>(context);
+    final journalState = Provider.of<JournalState>(context);
     List<UnicornButton> buttons = List<UnicornButton>();
-    if (user != null && globalState.user == null) {
-      globalState.user = user;
+    if (user != null && userState.user == null) {
+      userState.user = user;
     }
     if (_selectedIndex == 0) {
       buttons.add(
@@ -126,19 +127,21 @@ class _NavigationControllerState extends State<NavigationController> {
           ),
         ),
       );
-      buttons.add(UnicornButton(
-        currentButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          heroTag: null,
-          mini: true,
-          child: FaIcon(FontAwesomeIcons.fileAlt),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => JournalEntryFormScreen(
-                      null, globalState.currentJournal, null))),
-        ),
-      ));
+      if (journalState.currentJournal != null) {
+        buttons.add(UnicornButton(
+          currentButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).primaryColor,
+            heroTag: null,
+            mini: true,
+            child: FaIcon(FontAwesomeIcons.fileAlt),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => JournalEntryFormScreen(
+                        null, journalState.currentJournal, null))),
+          ),
+        ));
+      }
     } else if (_selectedIndex == 2) {
       buttons.add(
         UnicornButton(
@@ -152,19 +155,21 @@ class _NavigationControllerState extends State<NavigationController> {
           ),
         ),
       );
-      buttons.add(UnicornButton(
-        currentButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          heroTag: null,
-          mini: true,
-          child: FaIcon(FontAwesomeIcons.fileAlt),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => JournalEntryFormScreen(
-                      null, globalState.currentJournal, null))),
-        ),
-      ));
+      if (journalState.currentJournal != null) {
+        buttons.add(UnicornButton(
+          currentButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).primaryColor,
+            heroTag: null,
+            mini: true,
+            child: FaIcon(FontAwesomeIcons.fileAlt),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => JournalEntryFormScreen(
+                        null, journalState.currentJournal, null))),
+          ),
+        ));
+      }
     }
     return Scaffold(
         bottomNavigationBar:

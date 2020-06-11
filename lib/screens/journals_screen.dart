@@ -43,7 +43,7 @@ class _JournalsScreenState extends State<JournalsScreen> {
                 child: Text("Latest entries", style: TextStyle(fontWeight: FontWeight.bold),),
               ),
               Expanded(
-                child: Consumer<GlobalState>(
+                child: Consumer<JournalState>(
                     builder: (context, model, widget) {
                       return JournalEntryList(model.currentJournal, 3);
                     }),

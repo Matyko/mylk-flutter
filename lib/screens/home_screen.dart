@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     String message;
-    final globalState = Provider.of<GlobalState>(context);
+    final globalState = Provider.of<UserState>(context);
     final user = globalState.user;
     final time = new DateTime.now().hour;
     if (time < 12) {

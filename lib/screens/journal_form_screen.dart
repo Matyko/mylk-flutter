@@ -28,13 +28,41 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
     super.initState();
   }
 
+  confirmDelete() async {
+    bool shouldDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Confirm"),
+        content: const Text(
+            "Are you sure you wish to delete this journal? You will loose all entries."),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () =>
+                  Navigator.of(context).pop(true),
+              child: const Text("DELETE")),
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text("CANCEL"),
+          ),
+        ],
+      );
+    });
+    if (shouldDelete) {
+      setState(() {
+        _journalBloc.deleteJournalById(widget.journal.id);
+        Navigator.of(context).pop(true);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _journalBloc = BlocProvider.of(context).journalBloc;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text('Add journal', style: TextStyle(fontFamily: 'Pacifico')),
+        title: Text(widget.journal != null ? 'Edit ${widget.journal.title}' : 'Create journal'),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -64,6 +92,18 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
                     child: TextFormField(
                       initialValue: _title,
                       decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white60,
+                          labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white54),
+                              borderRadius: BorderRadius.circular(10.0)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white54),
+                              borderRadius: BorderRadius.circular(10.0)
+                          ),
                           labelText: 'Journal name'),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -126,11 +166,8 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
                           if (widget.journal == null) {
                             Navigator.pop(context);
                           } else {
-                            setState(() {
-                              _journalBloc.deleteJournalById(widget.journal.id);
-                            });
+                            confirmDelete();
                           }
-                          Navigator.pop(context);
                         },
                         child: Text(
                           widget.journal != null ? 'Delete journal' : 'Cancel',
