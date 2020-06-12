@@ -14,7 +14,8 @@ List<StaggeredTile> _staggeredTiles = const <StaggeredTile>[
   StaggeredTile.count(2, 1),
   StaggeredTile.count(1, 1),
   StaggeredTile.count(1, 1),
-  StaggeredTile.count(2, 1)
+  StaggeredTile.count(2, 1),
+  StaggeredTile.count(1, 1)
 ];
 
 class StatisticsScreen extends StatefulWidget {
@@ -82,7 +83,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   builder: (context, snapshot) {
                     return (snapshot != null && snapshot.data != null) ? MoodEntryChart(snapshot.data) : Container();
                   }
-              )
+              ),
+              Container()
             ],
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,
