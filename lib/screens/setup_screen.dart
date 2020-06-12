@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mylk/widgets/user_form.dart';
 
 class SetupScreen extends StatefulWidget {
+
   const SetupScreen({Key key}) : super(key: key);
 
   @override
@@ -28,7 +29,7 @@ class _SetupScreenState extends State<SetupScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Welcome", style: TextStyle(fontSize: 30.0),),
+            Text("Welcome", style: TextStyle(fontSize: 50.0, fontFamily: 'Pacifico', color: Theme.of(context).primaryColor),),
             UserForm(null)
           ],
         )

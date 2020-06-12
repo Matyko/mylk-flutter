@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mylk/screens/setup_screen.dart';
 import 'package:mylk/state/global_state.dart';
 import 'package:mylk/widgets/journal_carousel.dart';
 import 'package:mylk/widgets/task_list.dart';
@@ -57,7 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         .of(context)
                         .primaryColor,
                     tooltip: 'Settings',
-                    onPressed: () => print('settings'),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => SetupScreen())),
                   )
                 ],
                 flexibleSpace: FlexibleSpaceBar(

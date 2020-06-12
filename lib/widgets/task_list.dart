@@ -106,6 +106,7 @@ class _TaskListState extends State<TaskList> {
                 confirmDismiss: (DismissDirection direction) async {
                   if (direction == DismissDirection.startToEnd) {
                     task.isDone = !task.isDone;
+                    task.doneAt = task.isDone ? DateTime.now() : null;
                     _taskBloc.updateTask(task);
                     return false;
                   } else {
@@ -149,6 +150,7 @@ class _TaskListState extends State<TaskList> {
                   ),
                   onTap: () {
                     task.isDone = !task.isDone;
+                    task.doneAt = task.isDone ? DateTime.now() : null;
                     _taskBloc.updateTask(task);
                   },
                   onLongPress: () {

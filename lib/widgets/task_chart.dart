@@ -14,7 +14,7 @@ class TaskChart extends StatelessWidget {
       Map<DateTime, double> _reducedData = Map<DateTime, double>();
       taskList.forEach((data) {
         if (data.isDone) {
-          DateTime day = new DateTime(data.modifiedAt.year, data.modifiedAt.month, data.modifiedAt.day);
+          DateTime day = new DateTime(data.doneAt.year, data.doneAt.month, data.doneAt.day);
           if (_reducedData[day] != null) {
             _reducedData[day]++;
           } else {
@@ -31,7 +31,7 @@ class TaskChart extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Tasks completed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              child: Text("Completed tasks / day", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
             ),
             Expanded(
               flex: 1,
@@ -39,8 +39,8 @@ class TaskChart extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: (_chartData != null && _chartData.length != 0) ? BezierChart(
                   bezierChartScale: BezierChartScale.WEEKLY,
-                  fromDate: new DateTime(taskList[0].modifiedAt.year, taskList[0].modifiedAt.month, taskList[0].modifiedAt.day, 0, 0),
-                  toDate: new DateTime(taskList[taskList.length - 1].modifiedAt.year, taskList[taskList.length - 1].modifiedAt.month, taskList[taskList.length - 1].modifiedAt.day, 23, 59),
+                  fromDate: new DateTime(taskList[0].createdAt.year, taskList[0].createdAt.month, taskList[0].createdAt.day, 0, 0),
+                  toDate: new DateTime(taskList[taskList.length - 1].createdAt.year, taskList[taskList.length - 1].createdAt.month, taskList[taskList.length - 1].createdAt.day, 23, 59),
                   series: [
                     BezierLine(
                       data: _chartData,

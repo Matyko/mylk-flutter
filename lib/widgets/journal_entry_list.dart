@@ -60,7 +60,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
             (BuildContext context, AsyncSnapshot<List<JournalEntry>> snapshot) {
           List<Widget> list = new List<Widget>();
           _currentDate = null;
-          if (widget.journal.id != null && model.journalEntryUpdates[widget.journal.id] != null && model.journalEntryUpdates[widget.journal.id] > _currentVersion) {
+          if (widget.journal != null && widget.journal.id != null && model.journalEntryUpdates[widget.journal.id] != null && model.journalEntryUpdates[widget.journal.id] > _currentVersion) {
             _currentVersion = model.journalEntryUpdates[widget.journal.id];
             loadData();
           }

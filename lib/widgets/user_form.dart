@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mylk/bloc/user_bloc.dart';
 import 'package:mylk/model/user_model.dart';
-import 'package:mylk/screens/home_screen.dart';
+import 'package:mylk/state/global_state.dart';
+import 'package:provider/provider.dart';
 
 class UserForm extends StatefulWidget {
   final User user;
@@ -25,11 +26,10 @@ class _UserFormState extends State<UserForm> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(50.0),
+            padding: EdgeInsets.only(left: 50.0, right: 50.0, bottom: 50.0, top: 30.0),
             child: TextFormField(
               initialValue: _name,
-              decoration: InputDecoration(
-                  labelText: "What's your name?"),
+              decoration: InputDecoration(labelText: "What's your name?"),
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter your name';
@@ -44,8 +44,8 @@ class _UserFormState extends State<UserForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 20.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: SizedBox(
               width: double.infinity,
               child: RaisedButton(
@@ -57,9 +57,10 @@ class _UserFormState extends State<UserForm> {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
                       if (widget.user == null) {
+                        User user = User(name: _name);
                         setState(() {
-                          _userBloc
-                              .addUser(User(name: _name));
+                          _userBloc.addUser(user);
+                          Provider.of<UserState>(context).updateUser(user);
                         });
                       } else {
                         widget.user.name = _name;

@@ -49,7 +49,8 @@ class DatabaseProvider {
         "due INTEGER, "
         "created_at INTEGER, "
         "modified_at INTEGER, "
-        "is_done INTEGER "
+        "is_done INTEGER, "
+        "done_at INTEGER "
         ")");
     await database.execute("CREATE TABLE $journalTable ("
         "id INTEGER PRIMARY KEY, "

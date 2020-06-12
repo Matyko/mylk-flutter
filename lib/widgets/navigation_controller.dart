@@ -48,6 +48,9 @@ class _NavigationControllerState extends State<NavigationController> {
     _userRepository = UserRepository();
     User _user = await _userRepository.getUser();
     await Future.delayed(const Duration(seconds: 2), () {});
+    if (_user != null && Provider.of<UserState>(context, listen: false).user == null) {
+      Provider.of<UserState>(context, listen: false).updateUser(_user);
+    }
     setState(() {
       this.user = _user;
       this.ready = true;
@@ -112,9 +115,6 @@ class _NavigationControllerState extends State<NavigationController> {
     final userState = Provider.of<UserState>(context);
     final journalState = Provider.of<JournalState>(context);
     List<UnicornButton> buttons = List<UnicornButton>();
-    if (user != null && userState.user == null) {
-      userState.user = user;
-    }
     if (_selectedIndex == 0) {
       buttons.add(
         UnicornButton(
@@ -184,43 +184,51 @@ class _NavigationControllerState extends State<NavigationController> {
         ));
       }
     }
-    return Scaffold(
-        bottomNavigationBar:
-            ready ? _bottomNavigationBar(_selectedIndex) : null,
-        body: ShaderMask(
-          shaderCallback: (Rect bounds) {
-            return LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment(0.0, 0.5),
-              colors: <Color>[
-                _selectedIndex == 3 || _selectedIndex == 4
-                    ? Colors.transparent
-                    : Colors.white,
-                Colors.transparent
-              ],
-            ).createShader(bounds);
-          },
-          blendMode: BlendMode.lighten,
-          child: PageStorage(
-            child: pages[ready ? user != null ? _selectedIndex : 4 : 5],
-            bucket: bucket,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: ready
-            ? UnicornDialer(
-                parentButtonBackground: Theme.of(context).primaryColor,
-                parentButton: Icon(FontAwesomeIcons.plus),
-                childButtons: buttons,
-                onMainButtonPressed: () {
-                  if (_selectedIndex == 1) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => TaskFormScreen(null)));
-                  }
-                },
-              )
-            : null);
+    return Consumer<UserState>(
+      builder: (context, model, widget) {
+        if (model.user != user) {
+          user = model.user;
+        }
+        return Scaffold(
+            bottomNavigationBar: (ready && user != null)
+                ? _bottomNavigationBar(_selectedIndex)
+                : null,
+            body: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment(0.0, 0.5),
+                  colors: <Color>[
+                    _selectedIndex == 4 || _selectedIndex == 5
+                        ? Colors.transparent
+                        : Colors.white,
+                    Colors.transparent
+                  ],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.lighten,
+              child: PageStorage(
+                child: pages[ready ? user != null ? _selectedIndex : 4 : 5],
+                bucket: bucket,
+              ),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: (ready && user != null)
+                ? UnicornDialer(
+                    parentButtonBackground: Theme.of(context).primaryColor,
+                    parentButton: Icon(FontAwesomeIcons.plus),
+                    childButtons: buttons,
+                    onMainButtonPressed: () {
+                      if (_selectedIndex == 1) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => TaskFormScreen(null)));
+                      }
+                    },
+                  )
+                : null);
+      },
+    );
   }
 }

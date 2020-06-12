@@ -29,7 +29,7 @@ class EntryChart extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Entries per day", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              child: Text("New entries / day", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
             ),
             Expanded(
               flex: 1,
