@@ -41,7 +41,8 @@ class DatabaseProvider {
         "name TEXT, "
         "email TEXT, "
         "created_at INTEGER, "
-        "modified_at INTEGER "
+        "modified_at INTEGER, "
+        "theme_id INTEGER"
         ")");
     await database.execute("CREATE TABLE $taskTable ("
         "id INTEGER PRIMARY KEY, "

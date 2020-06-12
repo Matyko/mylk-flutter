@@ -80,7 +80,6 @@ class _JournalEntryListState extends State<JournalEntryList> {
               }
               list.add(Dismissible(
                 background: Container(
-                  color: Theme.of(context).primaryColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -90,7 +89,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
                           children: <Widget>[
                             FaIcon(
                               FontAwesomeIcons.pencilAlt,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ],
                         ),
@@ -99,7 +98,6 @@ class _JournalEntryListState extends State<JournalEntryList> {
                   ),
                 ),
                 secondaryBackground: Container(
-                  color: Colors.red,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -109,7 +107,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
                           children: <Widget>[
                             FaIcon(
                               FontAwesomeIcons.trashAlt,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ],
                         ),

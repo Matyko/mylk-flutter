@@ -17,28 +17,68 @@ class JournalScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white38,
+        backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: CloseButton(
-          color: Colors.black,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            child: CloseButton(
+              color: Colors.black54,
+            ),
+          ),
         ),
         centerTitle: true,
-        title: Text(
-          journal.title,
-          style: TextStyle(fontSize: 20.0, color: Colors.black),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      journal.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20.0, color: Colors.black54, fontFamily: 'Pacifico'),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: FaIcon(FontAwesomeIcons.cog),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => JournalFormSceen(journal)));
-            },
-          )
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: 40.0,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.0)
+              ),
+              child: IconButton(
+                icon: FaIcon(FontAwesomeIcons.pencilAlt),
+                color: Colors.black54,
+                iconSize: 20.0,
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => JournalFormSceen(journal)));
+                },
+              )
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

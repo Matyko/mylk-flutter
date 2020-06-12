@@ -64,7 +64,6 @@ class _TaskListState extends State<TaskList> {
               }
               list.add(Dismissible(
                 background: Container(
-                  color: Theme.of(context).primaryColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -76,7 +75,7 @@ class _TaskListState extends State<TaskList> {
                               task.isDone == true
                                   ? FontAwesomeIcons.square
                                   : FontAwesomeIcons.checkSquare,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ],
                         ),
@@ -85,7 +84,6 @@ class _TaskListState extends State<TaskList> {
                   ),
                 ),
                 secondaryBackground: Container(
-                  color: Colors.red,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -95,7 +93,7 @@ class _TaskListState extends State<TaskList> {
                           children: <Widget>[
                             FaIcon(
                               FontAwesomeIcons.trashAlt,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ],
                         ),

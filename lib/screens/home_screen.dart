@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mylk/screens/settings_screen.dart';
 import 'package:mylk/screens/setup_screen.dart';
 import 'package:mylk/state/global_state.dart';
 import 'package:mylk/widgets/journal_carousel.dart';
@@ -53,13 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 expandedHeight: 150.0,
                 actions: <Widget>[
                   IconButton(
-                    icon: FaIcon(FontAwesomeIcons.cog),
+                    icon: FaIcon(FontAwesomeIcons.slidersH),
                     color: Theme
                         .of(context)
                         .primaryColor,
                     tooltip: 'Settings',
                     onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => SetupScreen())),
+                        MaterialPageRoute(builder: (_) => SettingsScreen())),
                   )
                 ],
                 flexibleSpace: FlexibleSpaceBar(

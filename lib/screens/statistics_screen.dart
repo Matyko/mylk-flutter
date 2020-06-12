@@ -43,53 +43,50 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return new Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: new StaggeredGridView.count(
-              crossAxisCount: 2,
-              staggeredTiles: _staggeredTiles,
-              children: <Widget>[
-                StreamBuilder(
-                    stream: _journalEntryBloc.journalEntries,
-                    builder: (context, snapshot) {
-                      return SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Entries");
-                    }
-                ),
-                StreamBuilder(
-                    stream: _taskBloc.tasks,
-                    builder: (context, snapshot) {
-                      return SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Tasks");
-                    }
-                ),
-                StreamBuilder(
+          child: new StaggeredGridView.count(
+            crossAxisCount: 2,
+            staggeredTiles: _staggeredTiles,
+            children: <Widget>[
+              StreamBuilder(
                   stream: _journalEntryBloc.journalEntries,
                   builder: (context, snapshot) {
-                    return (snapshot != null && snapshot.data != null) ? MoodChart(snapshot.data) : Container();
+                    return SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Entries");
                   }
-                ),
-                StreamBuilder(
-                    stream: _journalEntryBloc.journalEntries,
-                    builder: (context, snapshot) {
-                      return (snapshot != null && snapshot.data != null) ? EntryChart(snapshot.data) : Container();
-                    }
-                ),
-                StreamBuilder(
-                    stream: _taskBloc.tasks,
-                    builder: (context, snapshot) {
-                      return (snapshot != null && snapshot.data != null) ? TaskChart(snapshot.data) : Container();
-                    }
-                ),
-                StreamBuilder(
-                    stream: _journalEntryBloc.journalEntries,
-                    builder: (context, snapshot) {
-                      return (snapshot != null && snapshot.data != null) ? MoodEntryChart(snapshot.data) : Container();
-                    }
-                )
-              ],
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              padding: const EdgeInsets.all(4.0),
-            ),
+              ),
+              StreamBuilder(
+                  stream: _taskBloc.tasks,
+                  builder: (context, snapshot) {
+                    return SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Tasks");
+                  }
+              ),
+              StreamBuilder(
+                stream: _journalEntryBloc.journalEntries,
+                builder: (context, snapshot) {
+                  return (snapshot != null && snapshot.data != null) ? MoodChart(snapshot.data) : Container();
+                }
+              ),
+              StreamBuilder(
+                  stream: _journalEntryBloc.journalEntries,
+                  builder: (context, snapshot) {
+                    return (snapshot != null && snapshot.data != null) ? EntryChart(snapshot.data) : Container();
+                  }
+              ),
+              StreamBuilder(
+                  stream: _taskBloc.tasks,
+                  builder: (context, snapshot) {
+                    return (snapshot != null && snapshot.data != null) ? TaskChart(snapshot.data) : Container();
+                  }
+              ),
+              StreamBuilder(
+                  stream: _journalEntryBloc.journalEntries,
+                  builder: (context, snapshot) {
+                    return (snapshot != null && snapshot.data != null) ? MoodEntryChart(snapshot.data) : Container();
+                  }
+              )
+            ],
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
+            padding: const EdgeInsets.all(4.0),
           ),
         ));
   }

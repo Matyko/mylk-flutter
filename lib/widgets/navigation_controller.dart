@@ -119,7 +119,7 @@ class _NavigationControllerState extends State<NavigationController> {
       buttons.add(
         UnicornButton(
           currentButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             heroTag: null,
             mini: true,
             child: FaIcon(FontAwesomeIcons.checkSquare),
@@ -131,7 +131,7 @@ class _NavigationControllerState extends State<NavigationController> {
       buttons.add(
         UnicornButton(
           currentButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             heroTag: null,
             mini: true,
             child: FaIcon(FontAwesomeIcons.book),
@@ -143,7 +143,7 @@ class _NavigationControllerState extends State<NavigationController> {
       if (journalState.currentJournal != null) {
         buttons.add(UnicornButton(
           currentButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             heroTag: null,
             mini: true,
             child: FaIcon(FontAwesomeIcons.fileAlt),
@@ -159,7 +159,7 @@ class _NavigationControllerState extends State<NavigationController> {
       buttons.add(
         UnicornButton(
           currentButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             heroTag: null,
             mini: true,
             child: FaIcon(FontAwesomeIcons.book),
@@ -171,7 +171,7 @@ class _NavigationControllerState extends State<NavigationController> {
       if (journalState.currentJournal != null) {
         buttons.add(UnicornButton(
           currentButton: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             heroTag: null,
             mini: true,
             child: FaIcon(FontAwesomeIcons.fileAlt),
@@ -215,7 +215,7 @@ class _NavigationControllerState extends State<NavigationController> {
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             floatingActionButton: (ready && user != null)
                 ? UnicornDialer(
-                    parentButtonBackground: Theme.of(context).primaryColor,
+                    parentButtonBackground: Theme.of(context).floatingActionButtonTheme.backgroundColor,
                     parentButton: Icon(FontAwesomeIcons.plus),
                     childButtons: buttons,
                     onMainButtonPressed: () {
