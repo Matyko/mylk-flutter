@@ -6,6 +6,7 @@ import 'package:mylk/model/journal_entry_model.dart';
 import 'package:mylk/model/journal_model.dart';
 import 'package:mylk/model/mood_model.dart';
 import 'package:mylk/state/global_state.dart';
+import 'package:mylk/widgets/date_time_picker.dart';
 import 'package:provider/provider.dart';
 
 class JournalEntryFormScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
   String _content;
   Mood _mood;
   int _journalId;
+  DateTime _dateTime;
   List<String> _images;
   JournalEntryBloc _journalEntryBloc;
   PageController _pageController;
@@ -37,6 +39,7 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
     _journalId = widget.journalEntry != null
         ? widget.journalEntry.journalId
         : widget.journal.id;
+    _dateTime = widget.journalEntry != null ? widget.journalEntry.date : DateTime.now();
     _pageController = new PageController(initialPage: 0, keepPage: true);
     _state = Provider.of<JournalEntryState>(context, listen: false);
     super.initState();
@@ -108,28 +111,49 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
             child: Container(
               padding: MediaQuery.of(context).viewInsets,
               height: MediaQuery.of(context).size.height - 80.0,
+              width: MediaQuery.of(context).size.width,
               child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          _pageController.animateToPage(0,
-                              duration: Duration(milliseconds: 1000),
-                              curve: Curves.easeOutQuint);
-                        },
-                        child: _mood != null
-                            ? Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white54,
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                padding: EdgeInsets.all(10.0),
-                                child: FaIcon(
-                                  _mood.icon,
-                                  color: Theme.of(context).primaryColor,
-                                ))
-                            : null,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              flex:0,
+                              child: FlatButton(
+                                onPressed: () {
+                                  _pageController.animateToPage(0,
+                                      duration: Duration(milliseconds: 1000),
+                                      curve: Curves.easeOutQuint);
+                                },
+                                child: _mood != null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white54,
+                                            borderRadius: BorderRadius.circular(10.0)),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: FaIcon(
+                                          _mood.icon,
+                                          color: Theme.of(context).primaryColor,
+                                        ))
+                                    : null,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(right: 20.0),
+                              width: 200.0,
+                              child: DateTimePickerField(_dateTime, (dateTime) {
+                                setState(() {
+                                  _dateTime = dateTime;
+                                });
+                              }, false),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -222,12 +246,14 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
                                               journalId: _journalId,
                                               title: _title,
                                               mood: _mood,
+                                              date: _dateTime,
                                               content: _content));
                                     });
                                   } else {
                                     widget.journalEntry.title = _title;
                                     widget.journalEntry.content = _content;
                                     widget.journalEntry.mood = _mood;
+                                    widget.journalEntry.date = _dateTime;
                                     setState(() {
                                       _journalEntryBloc.updateJournalEntry(
                                           widget.journalEntry);

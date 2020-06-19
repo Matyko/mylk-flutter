@@ -42,32 +42,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: new StaggeredGridView.count(
-            crossAxisCount: 2,
-            staggeredTiles: _staggeredTiles,
-            children: <Widget>[
-              StreamBuilder(
-                  stream: userBloc.user,
-                  builder: (context, snapshot) {
-                    return Card(
-                      child: snapshot.data != null
-                          ? UserForm(snapshot.data)
-                          : null,
-                    );
-                  }),
-              StreamBuilder(
-                  stream: userBloc.user,
-                  builder: (context, snapshot) {
-                    return Card(
-                      child: snapshot.data != null
-                          ? ColorPicker()
-                          : null,
-                    );
-                  }),
-            ],
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-            padding: const EdgeInsets.all(4.0),
+          child: SingleChildScrollView(
+            child: Container(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Flexible(
+                    flex: 0,
+                    child: StreamBuilder(
+                        stream: userBloc.user,
+                        builder: (context, snapshot) {
+                          return snapshot.data != null
+                              ? UserForm(snapshot.data)
+                              : Container(width: 0, height: 0,);
+                        }),
+                  ),
+                  Flexible(
+                    flex: 0,
+                    child: StreamBuilder(
+                        stream: userBloc.user,
+                        builder: (context, snapshot) {
+                          return snapshot.data != null
+                              ? ColorPicker()
+                              : Container(width: 0, height: 0,);
+                        }),
+                  ),
+                ],
+              ),
+            ),
           ),
         ));
   }

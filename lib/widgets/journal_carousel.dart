@@ -80,31 +80,37 @@ class _JournalCarouselState extends State<JournalCarousel> {
                   });
                 } else {
                   list.add(
-                    Container(
-                      margin: EdgeInsets.all(40.0),
-                      decoration: BoxDecoration(
-                          color: Colors.black26,
-                          boxShadow: [
-                            new BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 5.0)
-                          ],
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(2.0),
-                              bottomLeft: Radius.circular(2.0),
-                              topRight: Radius.circular(20.0),
-                              bottomRight:
-                              Radius.circular(20.0))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () => Navigator.push(context,
-                                MaterialPageRoute(builder: (_) => JournalFormSceen(null))),
-                            child: FaIcon(FontAwesomeIcons.plusCircle, color: Colors.white70, size: 50.0,),
-                          )
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 150.0,
+                          margin: EdgeInsets.all(40.0),
+                          decoration: BoxDecoration(
+                              color: Colors.black26,
+                              boxShadow: [
+                                new BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 5.0)
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(2.0),
+                                  bottomLeft: Radius.circular(2.0),
+                                  topRight: Radius.circular(20.0),
+                                  bottomRight:
+                                  Radius.circular(20.0))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              FlatButton(
+                                onPressed: () => Navigator.push(context,
+                                    MaterialPageRoute(builder: (_) => JournalFormSceen(null))),
+                                child: FaIcon(FontAwesomeIcons.plusCircle, color: Colors.white70, size: 50.0,),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     )
                   );
                 }

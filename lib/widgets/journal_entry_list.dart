@@ -69,13 +69,13 @@ class _JournalEntryListState extends State<JournalEntryList> {
               snapshot.data.length != 0) {
             snapshot.data.forEach((journalEntry) {
               if (_currentDate == null
-                  || _currentDate.year != journalEntry.createdAt.year
-                  || _currentDate.month != journalEntry.createdAt.month
-                  || _currentDate.day != journalEntry.createdAt.day
+                  || _currentDate.year != journalEntry.date.year
+                  || _currentDate.month != journalEntry.date.month
+                  || _currentDate.day != journalEntry.date.day
               ) {
-                _currentDate = journalEntry.createdAt;
+                _currentDate = journalEntry.date;
                 list.add(ListTile(
-                  title: Text(DateFormat('yyyy.MM.dd').format(journalEntry.createdAt))
+                  title: Text(DateFormat('yyyy.MM.dd').format(journalEntry.date))
                 ));
               }
               list.add(Dismissible(
@@ -161,7 +161,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       FaIcon(journalEntry.mood.icon),
-                      Text(DateFormat('kk:mm').format(journalEntry.createdAt), textAlign: TextAlign.right,)
+                      Text(DateFormat('kk:mm').format(journalEntry.date), textAlign: TextAlign.right,)
                     ],
                   ),
                 ),

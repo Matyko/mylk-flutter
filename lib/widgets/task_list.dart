@@ -7,6 +7,7 @@ import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
 import 'package:mylk/screens/task_form_screen.dart';
+import 'package:mylk/widgets/task_list_element.dart';
 
 class TaskList extends StatefulWidget {
   final DateTime date;
@@ -28,14 +29,25 @@ class _TaskListState extends State<TaskList> {
     if (_taskBloc != taskBloc) {
       _taskBloc = taskBloc;
       if (widget.date != null) {
-        final int startOfDay = DateTime(widget.date.year, widget.date.month, widget.date.day).millisecondsSinceEpoch;
-        final int endOfDay = DateTime(widget.date.year, widget.date.month, widget.date.day, 23, 59, ).millisecondsSinceEpoch;
+        final int startOfDay =
+            DateTime(widget.date.year, widget.date.month, widget.date.day)
+                .millisecondsSinceEpoch;
+        final int endOfDay = DateTime(
+          widget.date.year,
+          widget.date.month,
+          widget.date.day,
+          23,
+          59,
+        ).millisecondsSinceEpoch;
         taskBloc.getTasks(query: {
-          "where": "due > ? AND due < ?",
-          "args": [startOfDay, endOfDay]
+          "where": "is_done = 0 AND due > ? AND due < ? OR is_done = 0 AND due IS NULL",
+          "args": [startOfDay, endOfDay],
+          "orderBy": "+due"
         });
       } else {
-        taskBloc.getTasks(query: null);
+        taskBloc.getTasks(query: {
+          "orderBy": "+due"
+        });
       }
     }
   }
@@ -47,129 +59,75 @@ class _TaskListState extends State<TaskList> {
         stream: _taskBloc.tasks,
         builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
           List<Widget> list = new List<Widget>();
+          List<Widget> prioList = List<Widget>();
           _currentDate = null;
           if (snapshot != null &&
               snapshot.data != null &&
               snapshot.data.length != 0) {
-            snapshot.data.forEach((task) {
-              if ((_currentDate == null
-                  || _currentDate.year != task.due.year
-                  || _currentDate.month != task.due.month
-                  || _currentDate.day != task.due.day
-              ) && widget.date == null) {
+            snapshot.data
+                .where((task) => task.due != null)
+                .toList()
+                .forEach((task) {
+              if ((_currentDate == null ||
+                      _currentDate.year != task.due.year ||
+                      _currentDate.month != task.due.month ||
+                      _currentDate.day != task.due.day) &&
+                  widget.date == null) {
                 _currentDate = task.createdAt;
                 list.add(ListTile(
-                    title: Text(DateFormat('yyyy.MM.dd').format(task.due))
-                ));
+                    title: Text(DateFormat('yyyy.MM.dd').format(task.due))));
               }
-              list.add(Dismissible(
-                background: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            FaIcon(
-                              task.isDone == true
-                                  ? FontAwesomeIcons.square
-                                  : FontAwesomeIcons.checkSquare,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                secondaryBackground: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ListTile(
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            FaIcon(
-                              FontAwesomeIcons.trashAlt,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                confirmDismiss: (DismissDirection direction) async {
-                  if (direction == DismissDirection.startToEnd) {
-                    task.isDone = !task.isDone;
-                    task.doneAt = task.isDone ? DateTime.now() : null;
-                    _taskBloc.updateTask(task);
-                    return false;
-                  } else {
-                    return await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("Confirm"),
-                          content: const Text(
-                              "Are you sure you wish to delete this item?"),
-                          actions: <Widget>[
-                            FlatButton(
-                                onPressed: () =>
-                                    Navigator.of(context).pop(true),
-                                child: const Text("DELETE")),
-                            FlatButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text("CANCEL"),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-                onDismissed: (DismissDirection direction) {
-                  _taskBloc.deleteTaskById(task.id);
-                },
-                key: Key(task.title),
-                child: ListTile(
-                  title: Text(task.title),
-                  subtitle:
-                      Text(DateFormat('yyyy-MM-dd - kk:mm').format(task.due)),
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      FaIcon(task.isDone == true
-                          ? FontAwesomeIcons.checkSquare
-                          : FontAwesomeIcons.square),
-                    ],
-                  ),
-                  onTap: () {
-                    task.isDone = !task.isDone;
-                    task.doneAt = task.isDone ? DateTime.now() : null;
-                    _taskBloc.updateTask(task);
-                  },
-                  onLongPress: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => TaskFormScreen(task)));
-                  },
-                ),
-              ));
+              list.add(TaskListElement(ValueKey(task.id), _taskBloc, task));
             });
+            final List<Task> noDateTasks =
+                snapshot.data.where((task) => task.due == null).toList();
+            if (noDateTasks.length != 0) {
+              noDateTasks.forEach((task) {
+                prioList
+                    .add(TaskListElement(ValueKey(task.id), _taskBloc, task));
+              });
+            }
           } else {
             list.add(ListTile(
                 leading: FaIcon(FontAwesomeIcons.check),
                 title: Text(
                     widget.date != null ? "No tasks for today" : "No tasks")));
           }
-          return ListView(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            children: list,
+          return SafeArea(
+            child: Column(
+              children: <Widget>[
+                prioList.length > 0 && list.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Continuous tasks",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                      )
+                    : SizedBox(height: 0),
+                ListView(
+                    physics: widget.date != null ? NeverScrollableScrollPhysics() : null,
+                    shrinkWrap: true,
+                    children: prioList),
+                prioList.length > 0 && list.length > 0
+                    ? Text(
+                        "Dated tasks",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                            color: Theme.of(context).primaryColor),
+                      )
+                    : SizedBox(height: 0),
+                ListView(
+                  physics: widget.date != null ? NeverScrollableScrollPhysics() : null,
+                  shrinkWrap: true,
+                  children: list,
+                ),
+              ],
+            ),
           );
         });
   }

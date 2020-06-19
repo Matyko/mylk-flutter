@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 class DateTimePickerField extends StatefulWidget {
   final DateTime dateTime;
   final Function(DateTime) callback;
+  final bool noEarlier;
 
-  DateTimePickerField(this.dateTime, this.callback);
+  DateTimePickerField(this.dateTime, this.callback, this.noEarlier);
 
   @override
   _DateTimePickerFieldState createState() => _DateTimePickerFieldState();
@@ -33,8 +34,8 @@ class _DateTimePickerFieldState extends State<DateTimePickerField> {
     final DateTime pickedDate = await showDatePicker(
         context: context,
         initialDate: _selectedDate,
-        firstDate: _selectedDate,
-        lastDate: new DateTime(DateTime.now().year + 2));
+        firstDate: _selectedDate != null && this.widget.noEarlier ? _selectedDate : DateTime(1990),
+        lastDate: DateTime(2100));
 
     if (pickedDate == null) return;
 
@@ -68,9 +69,9 @@ class _DateTimePickerFieldState extends State<DateTimePickerField> {
         child: AbsorbPointer(
           child: TextFormField(
             decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
                 filled: true,
                 fillColor: Colors.white60,
-                labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white54),
@@ -79,8 +80,7 @@ class _DateTimePickerFieldState extends State<DateTimePickerField> {
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white54),
                     borderRadius: BorderRadius.circular(10.0)
-                ),
-                labelText: 'Task due'),
+                )),
             controller: _controller,
             validator: (value) {
               if (value.isEmpty) {

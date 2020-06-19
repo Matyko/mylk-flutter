@@ -45,48 +45,76 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: TextFormField(
-                    initialValue: _title,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white60,
-                        labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white54),
-                            borderRadius: BorderRadius.circular(10.0)
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 20.0),
+                      width: 40.0,
+                      child: Checkbox(
+                        value: _dateTime != null,
+                        activeColor: Theme.of(context).primaryColor,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _dateTime = newValue ? DateTime.now() : null;
+                          });
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
+                          child: _dateTime == null
+                              ? Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                                child: Text("No date", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                              )
+                              : DateTimePickerField(_dateTime, (dateTime) {
+                                  setState(() {
+                                    _dateTime = dateTime;
+                                  });
+                                }, true),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white54),
-                            borderRadius: BorderRadius.circular(10.0)
-                        ),
-                        labelText: 'Task description'),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                    onSaved: (String value) {
-                      setState(() {
-                        _title = value;
-                      });
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
                 Expanded(
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
-                    child: DateTimePickerField(_dateTime, (dateTime) {
-                      setState(() {
-                        _dateTime = dateTime;
-                      });
-                    }),
+                    child: TextFormField(
+                      initialValue: _title,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white60,
+                          labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor),
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white54),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white54),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          labelText: 'Task description'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        setState(() {
+                          _title = value;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 Padding(
@@ -104,8 +132,8 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                             _formKey.currentState.save();
                             if (widget.task == null) {
                               setState(() {
-                                taskBloc
-                                    .addTask(Task(title: _title, due: _dateTime));
+                                taskBloc.addTask(
+                                    Task(title: _title, due: _dateTime, priority: 0));
                               });
                             } else {
                               widget.task.title = _title;

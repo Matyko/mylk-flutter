@@ -13,7 +13,7 @@ class EntryChart extends StatelessWidget {
     if (journalEntries != null && journalEntries.length != 0) {
       Map<DateTime, double> _reducedData = Map<DateTime, double>();
       journalEntries.forEach((data) {
-        DateTime day = new DateTime(data.createdAt.year, data.createdAt.month, data.createdAt.day);
+        DateTime day = new DateTime(data.date.year, data.date.month, data.date.day);
         if (_reducedData[day] != null) {
           _reducedData[day]++;
         } else {
@@ -37,14 +37,15 @@ class EntryChart extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: (_chartData != null && _chartData.length != 0) ? BezierChart(
                   bezierChartScale: BezierChartScale.WEEKLY,
-                  fromDate: new DateTime(journalEntries[0].createdAt.year, journalEntries[0].createdAt.month, journalEntries[0].createdAt.day, 0, 0),
-                  toDate: new DateTime(journalEntries[journalEntries.length - 1].createdAt.year, journalEntries[journalEntries.length - 1].createdAt.month, journalEntries[journalEntries.length - 1].createdAt.day, 23, 59),
+                  toDate: new DateTime(journalEntries[0].date.year, journalEntries[0].date.month, journalEntries[0].date.day, 0, 0),
+                  fromDate: new DateTime(journalEntries[journalEntries.length - 1].date.year, journalEntries[journalEntries.length - 1].date.month, journalEntries[journalEntries.length - 1].date.day, 23, 59),
                   series: [
                     BezierLine(
                       data: _chartData,
                     ),
                   ],
                   config: BezierChartConfig(
+                    showDataPoints: false,
                     verticalIndicatorStrokeWidth: 3.0,
                     verticalIndicatorColor: Colors.black26,
                     showVerticalIndicator: true,

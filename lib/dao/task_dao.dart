@@ -32,7 +32,12 @@ class TaskDao {
     List<Task> tasks = result.isNotEmpty
         ? result.map((item) => Task.fromDatabaseJson(item)).toList()
         : [];
-    tasks.sort((a,b) => a.due.compareTo(b.due));
+    tasks.sort((a,b) {
+      if (a.due == null && b.due == null) return 0;
+      if (a.due == null) return -1;
+      if (b.due == null) return 1;
+      return a.due.compareTo(b.due);
+    });
     return tasks;
   }
 

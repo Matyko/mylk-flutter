@@ -21,44 +21,47 @@ class JournalIllustration extends StatelessWidget {
           height: 300.0,
           child: Stack(
             children: <Widget>[
-              Hero(
-                tag: journal.id,
-                child: Container(
-                  margin: EdgeInsets.all(40.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        new BoxShadow(
-                            color: Colors.black45,
-                            blurRadius: 15.0)
+              Align(
+                child: Hero(
+                  tag: journal.id,
+                  child: Container(
+                    width: 150.0,
+                    margin: EdgeInsets.all(40.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          new BoxShadow(
+                              color: Colors.black45,
+                              blurRadius: 15.0)
+                        ],
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/${journal.backgroundImage}.jpg"),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(2.0),
+                            bottomLeft: Radius.circular(2.0),
+                            topRight: Radius.circular(20.0),
+                            bottomRight:
+                            Radius.circular(20.0))),
+                    child: Row(
+                      crossAxisAlignment:
+                      CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          width: 10.0,
+                          margin: EdgeInsets.only(right: 30.0),
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              boxShadow: [
+                                new BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 1.5)
+                              ]),
+                        )
                       ],
-                      image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/${journal.backgroundImage}.jpg"),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(2.0),
-                          bottomLeft: Radius.circular(2.0),
-                          topRight: Radius.circular(20.0),
-                          bottomRight:
-                          Radius.circular(20.0))),
-                  child: Row(
-                    crossAxisAlignment:
-                    CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        width: 10.0,
-                        margin: EdgeInsets.only(right: 30.0),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            boxShadow: [
-                              new BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 1.5)
-                            ]),
-                      )
-                    ],
+                    ),
                   ),
                 ),
               ),

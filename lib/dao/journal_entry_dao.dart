@@ -23,16 +23,16 @@ class JournalEntryDao {
             where: query["where"],
             whereArgs: query["args"],
             limit: query["limit"],
-            orderBy: query["orderBy"] != null ? query["orderBy"] : "-created_at"
+            orderBy: query["orderBy"] != null ? query["orderBy"] : "-date"
         );
     } else {
-      result = await db.query(journalEntryTable, columns: columns);
+      result = await db.query(journalEntryTable, columns: columns, orderBy: "-date");
     }
 
-    List<JournalEntry> journalEntres = result.isNotEmpty
+    List<JournalEntry> journalEntries = result.isNotEmpty
         ? result.map((item) => JournalEntry.fromDatabaseJson(item)).toList()
         : [];
-    return journalEntres;
+    return journalEntries;
   }
 
   Future<int> updateJournalEntry(JournalEntry journalEntry) async {

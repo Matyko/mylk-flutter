@@ -26,10 +26,9 @@ class _SetupScreenState extends State<SetupScreen> {
       opacity: _visible ? 1.0 : 0.0,
       duration: Duration(milliseconds: 300),
       child: Container(
-          color: Colors.white,
+          padding: MediaQuery.of(context).viewInsets,
           height: MediaQuery.of(context).size.height,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
@@ -41,11 +40,10 @@ class _SetupScreenState extends State<SetupScreen> {
               ),
               Expanded(
                   flex: 0,
-                  child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UserForm(null),
-                      ))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: UserForm(null),
+                  )),
             ],
           )),
     );
