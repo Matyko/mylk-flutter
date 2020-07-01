@@ -16,7 +16,7 @@ class _MylkBottomNavigationBarState extends State<MylkBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      elevation: 0,
+      elevation: 15.0,
       child: Container(
         height: 50.0,
         child: Stack(
