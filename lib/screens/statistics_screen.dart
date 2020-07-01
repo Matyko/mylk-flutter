@@ -43,6 +43,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     }
     return new Scaffold(
         backgroundColor: Colors.white,
+        extendBody: true,
         body: SafeArea(
           child: new StaggeredGridView.count(
             crossAxisCount: 2,
