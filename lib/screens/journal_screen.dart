@@ -101,8 +101,7 @@ class JournalScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   image: DecorationImage(
-                      image: AssetImage(
-                          "assets/images/${journal.backgroundImage}.jpg"),
+                      image: AssetImage(journal.backgroundImagePath),
                       fit: BoxFit.cover),
                 ),
                 child: SafeArea(

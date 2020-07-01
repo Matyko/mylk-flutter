@@ -71,13 +71,17 @@ class _MylkBottomNavigationBarState extends State<MylkBottomNavigationBar> {
                             ? Theme.of(context).primaryColor
                             : Theme.of(context).backgroundColor),
                   ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container()
                 )
               ],
             ),
             AnimatedPositioned(
               top: 0.0,
-              left: MediaQuery.of(context).size.width / 4 * widget.selectedIndex,
-              width: MediaQuery.of(context).size.width / 4,
+              left: MediaQuery.of(context).size.width / 5 * widget.selectedIndex,
+              width: MediaQuery.of(context).size.width / 5,
               height: 2.5,
               duration: Duration(milliseconds: 250),
               child: Container(

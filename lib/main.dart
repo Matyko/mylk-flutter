@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/journal_bloc.dart';
@@ -11,10 +12,19 @@ import 'package:mylk/widgets/navigation_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'model/theme_model.dart';
+import 'notifications/notification_helper.dart';
 
-void main() {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+NotificationAppLaunchDetails notificationAppLaunchDetails;
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  notificationAppLaunchDetails =
+  await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  await initNotifications(flutterLocalNotificationsPlugin);
+  requestIOSPermissions();
   FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+  FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
   runApp(ChangeNotifierProvider<JournalState>(
     create: (context) => JournalState(),
     child: ChangeNotifierProvider<UserState>(
@@ -46,7 +56,9 @@ class MylkApp extends StatelessWidget {
             home: NavigationController(),
             theme: snapshot.data != null && snapshot.data.themeId != null
                 ? themes
-                    .firstWhere((element) => element.id == snapshot.data.themeId).themeData
+                    .firstWhere(
+                        (element) => element.id == snapshot.data.themeId)
+                    .themeData
                 : themes[0].themeData,
           );
         });

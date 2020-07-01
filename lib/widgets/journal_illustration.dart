@@ -36,7 +36,7 @@ class JournalIllustration extends StatelessWidget {
                         ],
                         image: DecorationImage(
                             image: AssetImage(
-                                "assets/images/${journal.backgroundImage}.jpg"),
+                                journal.backgroundImagePath),
                             fit: BoxFit.cover),
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(2.0),

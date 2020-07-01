@@ -75,8 +75,9 @@ class _NavigationControllerState extends State<NavigationController> {
               child: pages[ready ? user != null ? _selectedIndex : 4 : 5],
               bucket: bucket,
             ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
             floatingActionButton: (ready && user != null)
-                ? MylkSpeedDial(_selectedIndex)
+                ? Container(padding: EdgeInsets.only(bottom: 20.0), child: MylkSpeedDial(_selectedIndex))
                 : null);
       },
     );

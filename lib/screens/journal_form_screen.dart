@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/journal_bloc.dart';
 import 'package:mylk/model/journal_model.dart';
-import 'package:mylk/widgets/imagePicker.dart';
+import 'package:mylk/widgets/mylk_image_picker.dart';
 
 class JournalFormSceen extends StatefulWidget {
   final Journal journal;
@@ -23,8 +22,7 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
   @override
   void initState() {
     _title = widget.journal != null ? widget.journal.title : "";
-    _backgroundImage =
-        widget.journal != null ? widget.journal.backgroundImage : "bg-1";
+    _backgroundImage =  widget.journal != null ? widget.journal.backgroundImagePath : "assets/images/bg-1.jpg";
     super.initState();
   }
 
@@ -77,10 +75,11 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: ImagePicker(
-                    callback: (name) {
+                  child: MylkImagePicker(
+                    selected: widget.journal != null ? widget.journal.backgroundImagePath : null,
+                    callback: (path) {
                       setState(() {
-                        _backgroundImage = name;
+                        _backgroundImage = path;
                       });
                     },
                   ),
@@ -135,11 +134,11 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
                               setState(() {
                                 _journalBloc.addJournal(Journal(
                                     title: _title,
-                                    backgroundImage: _backgroundImage));
+                                    backgroundImagePath: _backgroundImage));
                               });
                             } else {
                               widget.journal.title = _title;
-                              widget.journal.backgroundImage = _backgroundImage;
+                              widget.journal.backgroundImagePath = _backgroundImage;
                               setState(() {
                                 _journalBloc.updateJournal(widget.journal);
                               });

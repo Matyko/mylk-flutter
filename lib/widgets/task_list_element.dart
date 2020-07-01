@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mylk/bloc/task_bloc.dart';
@@ -14,6 +15,7 @@ class TaskListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLate = task.due != null && task.due.isBefore(DateTime.now()) && !task.isDone;
     return Dismissible(
       key: ValueKey(task.id),
       background: Container(
@@ -86,10 +88,37 @@ class TaskListElement extends StatelessWidget {
         _taskBloc.deleteTaskById(task.id);
       },
       child: ListTile(
-        title: Text(task.title),
-        subtitle: task.due != null
-            ? Text(DateFormat('yyyy-MM-dd - kk:mm').format(task.due))
-            : null,
+        title: AnimatedOpacity(
+          duration: Duration(milliseconds: 250),
+          opacity: task.isDone ? 0.5 : 1,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(10.0)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(task.title,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                if (task.due != null)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      FaIcon(isLate ? FontAwesomeIcons.exclamationTriangle : FontAwesomeIcons.clock, color: Colors.white, size: 12.0),
+                      SizedBox(width: 10.0,),
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                              DateFormat('yyyy-MM-dd - kk:mm').format(task.due),
+                              style: TextStyle(color: Colors.white))),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+        ),
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/screens/settings_screen.dart';
-import 'package:mylk/screens/setup_screen.dart';
 import 'package:mylk/state/global_state.dart';
 import 'package:mylk/widgets/journal_carousel.dart';
 import 'package:mylk/widgets/task_list.dart';
@@ -50,47 +49,35 @@ class _HomeScreenState extends State<HomeScreen> {
             slivers: <Widget>[
               SliverAppBar(
                 elevation: 0.0,
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).primaryColor,
                 expandedHeight: 150.0,
                 actions: <Widget>[
                   IconButton(
                     icon: FaIcon(FontAwesomeIcons.slidersH),
-                    color: Theme
-                        .of(context)
-                        .primaryColor,
+                    color: Colors.white,
                     tooltip: 'Settings',
                     onPressed: () => Navigator.push(context,
                         MaterialPageRoute(builder: (_) => SettingsScreen())),
                   )
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                    title: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            message,
+                  titlePadding: EdgeInsets.zero,
+                  centerTitle: true,
+                  title: SizedBox(
+                    height: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(message, style: TextStyle(color: Colors.white)),
+                        Text(user.name,
                             style: TextStyle(
-                                fontSize: 20.0,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
-                                letterSpacing: 1.0),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            user.name,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            )
-                          )
-                        ],
-                      ),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ],
                     ),
-                    titlePadding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),),
+                  ),
+                ),
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
@@ -101,7 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       "Tasks for today",
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
                     ),
                   ),
                   TaskList(date: DateTime.now()),
@@ -112,7 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       "Your journals",
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
                     ),
                   ),
                   JournalCarousel(),

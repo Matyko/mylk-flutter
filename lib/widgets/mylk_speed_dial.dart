@@ -21,23 +21,30 @@ class _MylkSpeedDialState extends State<MylkSpeedDial> {
   Widget build(BuildContext context) {
     return Consumer<JournalState>(
       builder: (context, model, widget) {
-        return SpeedDial(animatedIcon: AnimatedIcons.menu_close, children: [
+        List<SpeedDialChild> children = [
           SpeedDialChild(
               child: FloatingActionButton(
                   heroTag: "tf",
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => TaskFormScreen(null)));
-                  }, child: FaIcon(FontAwesomeIcons.checkSquare))),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => TaskFormScreen(null)));
+                  },
+                  child: FaIcon(FontAwesomeIcons.checkSquare))),
           SpeedDialChild(
               child: FloatingActionButton(
                   heroTag: "jf",
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => JournalFormSceen(null)));
-                  }, child: FaIcon(FontAwesomeIcons.book))),
-          model.currentJournal != null
-              ? SpeedDialChild(
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => JournalFormSceen(null)));
+                  },
+                  child: FaIcon(FontAwesomeIcons.book)))
+        ];
+        if (model.currentJournal != null) {
+          children.add(SpeedDialChild(
               child: FloatingActionButton(
                   heroTag: "jef",
                   onPressed: () {
@@ -46,9 +53,11 @@ class _MylkSpeedDialState extends State<MylkSpeedDial> {
                         MaterialPageRoute(
                             builder: (_) => JournalEntryFormScreen(
                                 null, model.currentJournal, null)));
-                  }, child: FaIcon(FontAwesomeIcons.fileAlt)))
-              : null
-        ]);
+                  },
+                  child: FaIcon(FontAwesomeIcons.fileAlt))));
+        }
+        return SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close, children: children);
       },
     );
   }

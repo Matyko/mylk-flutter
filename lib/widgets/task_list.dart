@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
-import 'package:mylk/screens/task_form_screen.dart';
 import 'package:mylk/widgets/task_list_element.dart';
 
 class TaskList extends StatefulWidget {
@@ -40,14 +39,13 @@ class _TaskListState extends State<TaskList> {
           59,
         ).millisecondsSinceEpoch;
         taskBloc.getTasks(query: {
-          "where": "is_done = 0 AND due > ? AND due < ? OR is_done = 0 AND due IS NULL",
+          "where":
+              "due > ? AND due < ? OR is_done = 0 AND due IS NULL",
           "args": [startOfDay, endOfDay],
           "orderBy": "+due"
         });
       } else {
-        taskBloc.getTasks(query: {
-          "orderBy": "+due"
-        });
+        taskBloc.getTasks(query: {"orderBy": "+due"});
       }
     }
   }
@@ -75,7 +73,18 @@ class _TaskListState extends State<TaskList> {
                   widget.date == null) {
                 _currentDate = task.createdAt;
                 list.add(ListTile(
-                    title: Text(DateFormat('yyyy.MM.dd').format(task.due))));
+                    title: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                              width: 2.0
+                            )
+                          )
+                        ),
+                        child:
+                            Text(DateFormat('yyyy.MM.dd').format(task.due), style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold)))));
               }
               list.add(TaskListElement(ValueKey(task.id), _taskBloc, task));
             });
@@ -109,7 +118,9 @@ class _TaskListState extends State<TaskList> {
                       )
                     : SizedBox(height: 0),
                 ListView(
-                    physics: widget.date != null ? NeverScrollableScrollPhysics() : null,
+                    physics: widget.date != null
+                        ? NeverScrollableScrollPhysics()
+                        : null,
                     shrinkWrap: true,
                     children: prioList),
                 prioList.length > 0 && list.length > 0
@@ -122,7 +133,9 @@ class _TaskListState extends State<TaskList> {
                       )
                     : SizedBox(height: 0),
                 ListView(
-                  physics: widget.date != null ? NeverScrollableScrollPhysics() : null,
+                  physics: widget.date != null
+                      ? NeverScrollableScrollPhysics()
+                      : null,
                   shrinkWrap: true,
                   children: list,
                 ),
