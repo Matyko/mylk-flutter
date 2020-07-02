@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
+import 'package:mylk/notifications/notification_helper.dart';
 import 'package:mylk/screens/task_form_screen.dart';
 
 class TaskListElement extends StatelessWidget {
@@ -12,6 +13,15 @@ class TaskListElement extends StatelessWidget {
   final Key key;
 
   const TaskListElement(this.key, this._taskBloc, this.task);
+
+  toggleCompleted() {
+    task.isDone = !task.isDone;
+    if (task.isDone && task.hasNotification) {
+      turnOffNotificationById(task.id);
+    }
+    task.doneAt = task.isDone ? DateTime.now() : null;
+    _taskBloc.updateTask(task);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +68,7 @@ class TaskListElement extends StatelessWidget {
       ),
       confirmDismiss: (DismissDirection direction) async {
         if (direction == DismissDirection.startToEnd) {
-          task.isDone = !task.isDone;
-          task.doneAt = task.isDone ? DateTime.now() : null;
-          _taskBloc.updateTask(task);
+          toggleCompleted();
           return false;
         } else {
           return await showDialog(
@@ -85,6 +93,9 @@ class TaskListElement extends StatelessWidget {
         }
       },
       onDismissed: (DismissDirection direction) {
+        if (task.hasNotification) {
+          turnOffNotificationById(task.id);
+        }
         _taskBloc.deleteTaskById(task.id);
       },
       child: ListTile(
@@ -92,8 +103,14 @@ class TaskListElement extends StatelessWidget {
           duration: Duration(milliseconds: 250),
           opacity: task.isDone ? 0.5 : 1,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             decoration: BoxDecoration(
+                boxShadow: [
+                  new BoxShadow(
+                      offset: Offset(0.0, 4.0),
+                      color: Colors.black38,
+                      blurRadius: 5.0)
+                ],
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(10.0)),
             child: Column(
@@ -103,17 +120,26 @@ class TaskListElement extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold)),
                 if (task.due != null)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      FaIcon(isLate ? FontAwesomeIcons.exclamationTriangle : FontAwesomeIcons.clock, color: Colors.white, size: 12.0),
-                      SizedBox(width: 10.0,),
-                      Expanded(
-                          flex: 1,
-                          child: Text(
-                              DateFormat('yyyy-MM-dd - kk:mm').format(task.due),
-                              style: TextStyle(color: Colors.white))),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        if (isLate) Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: FaIcon(FontAwesomeIcons.exclamationTriangle, color: Colors.white, size: 12.0),
+                        ),
+                        if (task.hasNotification) Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: FaIcon(FontAwesomeIcons.bell, color: Colors.white, size: 12.0),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                                DateFormat('yyyy-MM-dd - kk:mm').format(task.due),
+                                style: TextStyle(color: Colors.white))),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -122,15 +148,16 @@ class TaskListElement extends StatelessWidget {
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FaIcon(task.isDone == true
-                ? FontAwesomeIcons.checkSquare
-                : FontAwesomeIcons.square),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: FaIcon(task.isDone == true
+                  ? FontAwesomeIcons.checkSquare
+                  : FontAwesomeIcons.square),
+            ),
           ],
         ),
         onTap: () {
-          task.isDone = !task.isDone;
-          task.doneAt = task.isDone ? DateTime.now() : null;
-          _taskBloc.updateTask(task);
+          toggleCompleted();
         },
         onLongPress: () {
           Navigator.push(

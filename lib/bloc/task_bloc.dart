@@ -20,8 +20,9 @@ class TaskBloc {
   }
 
   addTask(Task task) async {
-    await _taskRepository.insertTask(task);
+    int id = await _taskRepository.insertTask(task);
     getTasks(query: _query);
+    return id;
   }
 
   updateTask(Task task) async {

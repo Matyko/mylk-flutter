@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
+import 'package:mylk/notifications/notification_helper.dart';
 import 'package:mylk/widgets/date_time_picker.dart';
 
 class TaskFormScreen extends StatefulWidget {
@@ -17,12 +19,14 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   final _formKey = GlobalKey<FormState>();
   DateTime _dateTime;
   String _title;
+  bool _notify;
   TaskBloc taskBloc;
 
   @override
   void initState() {
     _dateTime = widget.task != null ? widget.task.due : DateTime.now();
     _title = widget.task != null ? widget.task.title : "";
+    _notify = widget.task != null ? widget.task.hasNotification : false;
     super.initState();
   }
 
@@ -56,6 +60,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                         onChanged: (newValue) {
                           setState(() {
                             _dateTime = newValue ? DateTime.now() : null;
+                            _notify = false;
                           });
                         },
                       ),
@@ -69,9 +74,13 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                               horizontal: 20.0, vertical: 10.0),
                           child: _dateTime == null
                               ? Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                                child: Text("No date", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                              )
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
+                                  child: Text("No date",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white)),
+                                )
                               : DateTimePickerField(_dateTime, (dateTime) {
                                   setState(() {
                                     _dateTime = dateTime;
@@ -80,13 +89,27 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                         ),
                       ),
                     ),
+                    if (_dateTime != null)
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _notify = !_notify;
+                          });
+                        },
+                        icon: FaIcon(
+                          _notify
+                              ? FontAwesomeIcons.bell
+                              : FontAwesomeIcons.bellSlash,
+                          color: Colors.white,
+                        ),
+                      )
                   ],
                 ),
                 Expanded(
                   flex: 1,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.only(
+                        right: 20.0, top: 10.0, left: 60.0),
                     child: TextFormField(
                       initialValue: _title,
                       decoration: InputDecoration(
@@ -127,20 +150,33 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            bool addNotification =
+                                _notify && _dateTime.isAfter(DateTime.now());
                             if (widget.task == null) {
-                              setState(() {
-                                taskBloc.addTask(
-                                    Task(title: _title, due: _dateTime, priority: 0));
-                              });
+                              int id = await taskBloc.addTask(Task(
+                                  title: _title,
+                                  due: _dateTime,
+                                  priority: 0,
+                                  hasNotification: addNotification));
+                              if (id != null && addNotification) {
+                                scheduleNotification(id, _title, _dateTime);
+                              }
                             } else {
+                              if (widget.task.hasNotification) {
+                                turnOffNotificationById(widget.task.id);
+                              }
+                              if (addNotification) {
+                                scheduleNotification(
+                                    widget.task.id, _title, _dateTime);
+                                widget.task.hasNotification = true;
+                              }
+                              widget.task.hasNotification = addNotification;
                               widget.task.title = _title;
                               widget.task.due = _dateTime;
-                              setState(() {
-                                taskBloc.updateTask(widget.task);
-                              });
+                              await taskBloc.updateTask(widget.task);
                             }
                             Navigator.pop(context);
                           }

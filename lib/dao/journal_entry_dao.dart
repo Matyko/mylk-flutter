@@ -28,7 +28,6 @@ class JournalEntryDao {
     } else {
       result = await db.query(journalEntryTable, columns: columns, orderBy: "-date");
     }
-
     List<JournalEntry> journalEntries = result.isNotEmpty
         ? result.map((item) => JournalEntry.fromDatabaseJson(item)).toList()
         : [];

@@ -44,13 +44,13 @@ class MoodChart extends StatelessWidget {
                 child: (_chartData != null && _chartData.length != 0)
                     ? BezierChart(
                         bezierChartScale: BezierChartScale.WEEKLY,
-                        toDate: new DateTime(
+                        fromDate: new DateTime(
                             journalEntries[0].date.year,
                             journalEntries[0].date.month,
                             journalEntries[0].date.day,
                             0,
                             0),
-                        fromDate: new DateTime(
+                        toDate: new DateTime(
                             journalEntries[journalEntries.length - 1].date.year,
                             journalEntries[journalEntries.length - 1]
                                 .date

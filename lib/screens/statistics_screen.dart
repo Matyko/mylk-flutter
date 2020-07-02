@@ -31,7 +31,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     final JournalEntryBloc _journalEntryBloc = JournalEntryBloc();
     final TaskBloc _taskBloc = TaskBloc();
-    _journalEntryBloc.getJournalEntries();
+    _journalEntryBloc.getJournalEntries(query: {"orderBy": "+date"});
     _taskBloc.getTasks(query: {"orderBy": "+created_at"});
     if (!_visible) {
       Future.delayed(Duration(milliseconds: 100), () {

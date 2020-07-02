@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/journal_bloc.dart';
 import 'package:mylk/model/journal_model.dart';
+import 'package:mylk/state/global_state.dart';
 import 'package:mylk/widgets/mylk_image_picker.dart';
+import 'package:provider/provider.dart';
 
 class JournalFormSceen extends StatefulWidget {
   final Journal journal;
@@ -47,10 +49,12 @@ class _JournalFormSceenState extends State<JournalFormSceen> {
       );
     });
     if (shouldDelete) {
-      setState(() {
-        _journalBloc.deleteJournalById(widget.journal.id);
-        Navigator.of(context).pop(true);
-      });
+      JournalState journalState = Provider.of<JournalState>(context);
+      if (journalState.currentJournal == widget.journal) {
+        journalState.currentJournal = null;
+      }
+      _journalBloc.deleteJournalById(widget.journal.id);
+      Navigator.of(context).pop(true);
     }
   }
 

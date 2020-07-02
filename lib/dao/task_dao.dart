@@ -8,8 +8,7 @@ class TaskDao {
   Future<int> createTask(Task task) async {
     final db = await dbProvider.database;
     task.createdAt = DateTime.now();
-    var result = db.insert(taskTable, task.toDatabaseJson());
-    return result;
+    return db.insert(taskTable, task.toDatabaseJson());
   }
 
   Future<List<Task>> getTasks({List<String> columns, Map<String, dynamic> query}) async {

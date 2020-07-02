@@ -7,9 +7,9 @@ class Task {
   DateTime modifiedAt;
   DateTime doneAt;
   int priority;
-  int notificationId;
+  bool hasNotification;
 
-  Task({this.id, this.title, this.due, this.isDone, this.createdAt, this.modifiedAt, this.doneAt, this.priority, this.notificationId});
+  Task({this.id, this.title, this.due, this.isDone, this.createdAt, this.modifiedAt, this.doneAt, this.priority, this.hasNotification});
 
   factory Task.fromDatabaseJson(Map<String, dynamic> data) => Task(
     id: data['id'],
@@ -20,7 +20,7 @@ class Task {
     createdAt: DateTime.fromMillisecondsSinceEpoch(data['created_at']),
     modifiedAt: data["modified_at"] != null ? DateTime.fromMillisecondsSinceEpoch(data['modified_at']) : null,
     doneAt: data["done_at"] != null ? DateTime.fromMillisecondsSinceEpoch(data['done_at']) : null,
-    notificationId: data["notification_id"]
+    hasNotification: data['has_notification'] == 0 ? false : true
   );
 
   Map<String, dynamic> toDatabaseJson() => {
@@ -32,7 +32,7 @@ class Task {
     "priority": this.priority,
     "modified_at": this.modifiedAt != null ? this.modifiedAt.millisecondsSinceEpoch : null,
     "done_at": this.doneAt != null ? this.doneAt.millisecondsSinceEpoch : null,
-    "notification_id": this.notificationId
+    "has_notification": this.hasNotification == true && this.isDone != true ? 1 : 0,
   };
 }
 

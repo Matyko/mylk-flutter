@@ -46,6 +46,7 @@ class JournalDao {
   Future<int> deleteJournal(int id) async {
     final db = await dbProvider.database;
     var result = await db.delete(journalTable, where: 'id = ?', whereArgs: [id]);
+    var jeResult = await db.delete(journalEntryTable, where: 'journal_id = ?', whereArgs: [id]);
     return result;
   }
 

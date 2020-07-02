@@ -85,7 +85,7 @@ class _JournalCarouselState extends State<JournalCarousel> {
                       children: <Widget>[
                         Container(
                           width: 150.0,
-                          margin: EdgeInsets.all(40.0),
+                          margin: EdgeInsets.symmetric(vertical: 40.0),
                           decoration: BoxDecoration(
                               color: Colors.black26,
                               boxShadow: [
