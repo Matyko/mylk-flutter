@@ -40,7 +40,10 @@ class _JournalEntryFormScreenState extends State<JournalEntryFormScreen> {
         ? widget.journalEntry.journalId
         : widget.journal.id;
     _dateTime = widget.journalEntry != null ? widget.journalEntry.date : DateTime.now();
-    _pageController = new PageController(initialPage: 0, keepPage: true);
+    _pageController = new PageController(initialPage: widget.journalEntry != null ? 1 :  0, keepPage: true);
+    if (widget.journalEntry != null) {
+      _mood = widget.journalEntry.mood;
+    }
     _state = Provider.of<JournalEntryState>(context, listen: false);
     super.initState();
   }

@@ -24,7 +24,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
   int _currentWidgetId;
   DateTime _currentDate;
   int _currentVersion = 0;
-  bool _ready = false;
+  bool _visible = false;
 
   @override
   void initState() {
@@ -34,13 +34,17 @@ class _JournalEntryListState extends State<JournalEntryList> {
     if (_currentWidgetId != null) {
       Provider.of<JournalEntryState>(context, listen: false).journalEntryUpdates[_currentWidgetId] = 0;
     }
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (mounted) {
+        setState(() {
+          _visible = true;
+        });
+      }
+    });
     super.initState();
   }
 
   void loadData() async {
-    setState(() {
-      _ready = false;
-    });
     if (widget.journal != null) {
       await _journalEntryBloc.getJournalEntries(query: {
         "where": "journal_id = ?",
@@ -50,9 +54,6 @@ class _JournalEntryListState extends State<JournalEntryList> {
     } else {
       await _journalEntryBloc.getJournalEntries();
     }
-    setState(() {
-      _ready = true;
-    });
   }
 
   @override
@@ -163,6 +164,13 @@ class _JournalEntryListState extends State<JournalEntryList> {
                         builder: (context) => JournalEntryScreen(journalEntry)
                     );
                   },
+                  onLongPress: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => JournalEntryFormScreen(
+                                journalEntry, widget.journal, loadData)));
+                  },
                   title: Text(journalEntry.title != null ? journalEntry.title : ""),
                   subtitle: Card(
                     child: Padding(
@@ -186,7 +194,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
             });
           }
           return AnimatedOpacity(
-            opacity: _ready ? 1.0 : 0.0,
+            opacity: _visible ? 1.0 : 0.0,
             duration: Duration(milliseconds: 300),
             child: ListView(
               padding: EdgeInsets.only(bottom: 20.0),

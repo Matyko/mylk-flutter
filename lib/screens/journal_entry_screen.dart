@@ -33,18 +33,25 @@ class JournalEntryScreen extends StatelessWidget {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(journalEntry.title != null ? journalEntry.title : "",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 20.0)),
-                    Text(
-                      DateFormat('yyyy/MM/dd - kk:mm')
-                          .format(journalEntry.date),
-                      textAlign: TextAlign.right,
-                      style: TextStyle(color: Colors.white),
+                    Flexible(
+                      flex: 1,
+                      child: Text(journalEntry.title != null ? journalEntry.title : "",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          )
+                      ),
+                    ),
+                    Flexible(
+                      flex: 0,
+                      child: Text(
+                        DateFormat('yyyy/MM/dd\nkk:mm')
+                            .format(journalEntry.date),
+                        textAlign: TextAlign.right,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),

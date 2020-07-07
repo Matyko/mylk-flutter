@@ -53,7 +53,7 @@ class JournalIllustration extends StatelessWidget {
                           width: 10.0,
                           margin: EdgeInsets.only(right: 30.0),
                           decoration: BoxDecoration(
-                              color: Colors.black,
+                              color: Color(0xff555555),
                               boxShadow: [
                                 new BoxShadow(
                                     color: Colors.black26,
