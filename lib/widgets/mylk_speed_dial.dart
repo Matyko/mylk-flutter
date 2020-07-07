@@ -23,6 +23,9 @@ class _MylkSpeedDialState extends State<MylkSpeedDial> {
       builder: (context, model, widget) {
         List<SpeedDialChild> children = [
           SpeedDialChild(
+              label: "Add task",
+              labelBackgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+              labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               child: FloatingActionButton(
                   heroTag: "tf",
                   onPressed: () {
@@ -34,6 +37,9 @@ class _MylkSpeedDialState extends State<MylkSpeedDial> {
                   },
                   child: FaIcon(FontAwesomeIcons.checkSquare))),
           SpeedDialChild(
+              label: "Create journal",
+              labelBackgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+              labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               child: FloatingActionButton(
                   heroTag: "jf",
                   onPressed: () {
@@ -46,6 +52,9 @@ class _MylkSpeedDialState extends State<MylkSpeedDial> {
         ];
         if (model.currentJournal != null) {
           children.add(SpeedDialChild(
+              label: "Add entry to ${model.currentJournal.title}",
+              labelBackgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+              labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               child: FloatingActionButton(
                   heroTag: "jef",
                   onPressed: () {

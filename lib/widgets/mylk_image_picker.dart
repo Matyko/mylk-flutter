@@ -15,7 +15,7 @@ class MylkImagePicker extends StatefulWidget {
 class _MylkImagePickerState extends State<MylkImagePicker> {
   final picker = ImagePicker();
   String _selected;
-  List<String> imagePaths = ["assets/images/bg-1.jpg","assets/images/bg-2.jpg","assets/images/bg-3.jpg","assets/images/bg-4.jpg","assets/images/bg-5.jpg"];
+  List<String> imagePaths = ["assets/images/bg-1.jpg","assets/images/bg-2.jpg","assets/images/bg-3.jpg","assets/images/bg-4.jpg"];
 
   @override
   void initState() {
@@ -35,6 +35,10 @@ class _MylkImagePickerState extends State<MylkImagePicker> {
 
   @override
   Widget build(BuildContext context) {
+    if (_selected != null && !imagePaths.contains(_selected)) {
+      imagePaths.add(_selected);
+    }
+
     List<Widget> children = List<Widget>();
     imagePaths.forEach((path) {
       children.add(FlatButton(

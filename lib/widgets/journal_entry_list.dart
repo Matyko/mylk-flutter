@@ -24,6 +24,7 @@ class _JournalEntryListState extends State<JournalEntryList> {
   int _currentWidgetId;
   DateTime _currentDate;
   int _currentVersion = 0;
+  bool _ready = false;
 
   @override
   void initState() {
@@ -36,16 +37,22 @@ class _JournalEntryListState extends State<JournalEntryList> {
     super.initState();
   }
 
-  void loadData() {
+  void loadData() async {
+    setState(() {
+      _ready = false;
+    });
     if (widget.journal != null) {
-      _journalEntryBloc.getJournalEntries(query: {
+      await _journalEntryBloc.getJournalEntries(query: {
         "where": "journal_id = ?",
         "args": [widget.journal.id],
         "limit": widget.limit
       });
     } else {
-      _journalEntryBloc.getJournalEntries();
+      await _journalEntryBloc.getJournalEntries();
     }
+    setState(() {
+      _ready = true;
+    });
   }
 
   @override
@@ -178,10 +185,14 @@ class _JournalEntryListState extends State<JournalEntryList> {
               ));
             });
           }
-          return ListView(
-            padding: EdgeInsets.only(bottom: 20.0),
-            shrinkWrap: true,
-            children: list,
+          return AnimatedOpacity(
+            opacity: _ready ? 1.0 : 0.0,
+            duration: Duration(milliseconds: 300),
+            child: ListView(
+              padding: EdgeInsets.only(bottom: 20.0),
+              shrinkWrap: true,
+              children: list,
+            ),
           );
         },
       ),

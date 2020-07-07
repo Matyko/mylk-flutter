@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mylk/bloc/bloc_provider.dart';
 import 'package:mylk/bloc/task_bloc.dart';
 import 'package:mylk/model/task_model.dart';
+import 'package:mylk/screens/task_form_screen.dart';
 import 'package:mylk/widgets/task_list_element.dart';
 
 class TaskList extends StatefulWidget {
@@ -20,12 +21,20 @@ class TaskList extends StatefulWidget {
 class _TaskListState extends State<TaskList> {
   TaskBloc _taskBloc;
   DateTime _currentDate;
+  bool _ready = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    loadTasks();
+  }
+
+  loadTasks() async {
     final taskBloc = BlocProvider.of(context).taskBloc;
     if (_taskBloc != taskBloc) {
+      setState(() {
+        _ready = false;
+      });
       _taskBloc = taskBloc;
       if (widget.date != null) {
         final int startOfDay =
@@ -38,15 +47,18 @@ class _TaskListState extends State<TaskList> {
           23,
           59,
         ).millisecondsSinceEpoch;
-        taskBloc.getTasks(query: {
+        await taskBloc.getTasks(query: {
           "where":
-              "due > ? AND due < ? OR is_done = 0 AND due IS NULL",
+          "due > ? AND due < ? OR is_done = 0 AND due IS NULL",
           "args": [startOfDay, endOfDay],
           "orderBy": "+due"
         });
       } else {
-        taskBloc.getTasks(query: {"orderBy": "+due"});
+        await taskBloc.getTasks(query: {"orderBy": "+due"});
       }
+      setState(() {
+        _ready = true;
+      });
     }
   }
 
@@ -98,51 +110,62 @@ class _TaskListState extends State<TaskList> {
             }
           } else {
             list.add(ListTile(
+              onTap: () {
+                showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) => TaskFormScreen(null)
+                );
+              },
                 leading: FaIcon(FontAwesomeIcons.check),
                 title: Text(
                     widget.date != null ? "No tasks for today" : "No tasks")));
           }
-          return SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                prioList.length > 0 && list.length > 0
-                    ? Padding(
+          return AnimatedOpacity(
+            opacity: _ready ? 1.0 : 0.0,
+            duration: Duration(milliseconds: 300),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  prioList.length > 0 && list.length > 0
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 15.0, top: 40.0, bottom: 10.0),
+                          child: Text(
+                            "Continuous tasks",
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        )
+                      : SizedBox(height: 0),
+                  ListView(
+                      physics: widget.date != null
+                          ? NeverScrollableScrollPhysics()
+                          : null,
+                      shrinkWrap: true,
+                      children: prioList),
+                  SizedBox(height: 20.0),
+                  prioList.length > 0 && list.length > 0
+                      ? Padding(
                         padding: const EdgeInsets.only(left: 15.0, top: 40.0, bottom: 10.0),
                         child: Text(
-                          "Continuous tasks",
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                            "Dated tasks",
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: Theme.of(context).primaryColor),
+                          ),
                       )
-                    : SizedBox(height: 0),
-                ListView(
+                      : SizedBox(height: 0),
+                  ListView(
                     physics: widget.date != null
                         ? NeverScrollableScrollPhysics()
                         : null,
                     shrinkWrap: true,
-                    children: prioList),
-                SizedBox(height: 20.0),
-                prioList.length > 0 && list.length > 0
-                    ? Padding(
-                      padding: const EdgeInsets.only(left: 15.0, top: 40.0, bottom: 10.0),
-                      child: Text(
-                          "Dated tasks",
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                    )
-                    : SizedBox(height: 0),
-                ListView(
-                  physics: widget.date != null
-                      ? NeverScrollableScrollPhysics()
-                      : null,
-                  shrinkWrap: true,
-                  children: list,
-                ),
-              ],
+                    children: list,
+                  ),
+                ],
+              ),
             ),
           );
         });
