@@ -32,6 +32,7 @@ List<List<Color>> colors = [
 List<ThemeData> themeDataArray = [
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[0][0],
       backgroundColor: colors[0][1],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -41,6 +42,7 @@ List<ThemeData> themeDataArray = [
       textTheme: TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[1][0],
       backgroundColor: colors[1][1],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -50,6 +52,7 @@ List<ThemeData> themeDataArray = [
       textTheme: TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[2][0],
       backgroundColor: colors[2][1],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -59,6 +62,7 @@ List<ThemeData> themeDataArray = [
       textTheme: TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[3][0],
       backgroundColor: colors[3][1],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -68,6 +72,7 @@ List<ThemeData> themeDataArray = [
       textTheme: TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[4][0],
       backgroundColor: colors[4][1],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -77,6 +82,7 @@ List<ThemeData> themeDataArray = [
       textTheme: TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[5][0],
       backgroundColor: colors[5][1],
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -86,6 +92,7 @@ List<ThemeData> themeDataArray = [
       textTheme: TextTheme(headline6: TextStyle(fontWeight: FontWeight.bold))),
   ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      canvasColor: Colors.transparent,
       primaryColor: colors[6][0],
       backgroundColor: colors[6][1],
       fontFamily: 'Quicksand',

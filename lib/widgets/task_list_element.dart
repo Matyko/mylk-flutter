@@ -160,8 +160,11 @@ class TaskListElement extends StatelessWidget {
           toggleCompleted();
         },
         onLongPress: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => TaskFormScreen(task)));
+          showModalBottomSheet(
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (context) => TaskFormScreen(task)
+          );
         },
       ),
     );

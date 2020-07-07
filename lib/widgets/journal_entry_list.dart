@@ -5,6 +5,7 @@ import 'package:mylk/bloc/journal_entry_bloc.dart';
 import 'package:mylk/model/journal_entry_model.dart';
 import 'package:mylk/model/journal_model.dart';
 import 'package:mylk/screens/journal_entry_form_screen.dart';
+import 'package:mylk/screens/journal_entry_screen.dart';
 import 'package:mylk/state/global_state.dart';
 import 'package:provider/provider.dart';
 
@@ -148,12 +149,21 @@ class _JournalEntryListState extends State<JournalEntryList> {
                 },
                 key: Key(journalEntry.id.toString()),
                 child: ListTile(
+                  onTap: () {
+                    showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) => JournalEntryScreen(journalEntry)
+                    );
+                  },
                   title: Text(journalEntry.title != null ? journalEntry.title : ""),
                   subtitle: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                          journalEntry.content != null ? journalEntry.content : ""),
+                        (journalEntry.content != null) ?
+                        (journalEntry.content.length <= 60) ? journalEntry.content
+                            : '${journalEntry.content.substring(0, 60)}...' : ""),
                     ),
                   ),
                   leading: Column(

@@ -26,10 +26,11 @@ class _MylkSpeedDialState extends State<MylkSpeedDial> {
               child: FloatingActionButton(
                   heroTag: "tf",
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => TaskFormScreen(null)));
+                    showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) => TaskFormScreen(null)
+                    );
                   },
                   child: FaIcon(FontAwesomeIcons.checkSquare))),
           SpeedDialChild(
