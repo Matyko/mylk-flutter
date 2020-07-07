@@ -9,23 +9,20 @@ class SumWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).primaryColor,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Text(title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(sum.toString(), style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold))
-                ],
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          Text(title, style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold)),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(sum.toString(), style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 50.0, fontWeight: FontWeight.bold))
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

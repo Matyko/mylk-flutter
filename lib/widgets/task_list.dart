@@ -74,17 +74,17 @@ class _TaskListState extends State<TaskList> {
                 _currentDate = task.createdAt;
                 list.add(ListTile(
                     title: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        padding: EdgeInsets.only(bottom: 10.0),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Theme.of(context).primaryColor,
-                              width: 2.0
+                              width: 1.0
                             )
                           )
                         ),
                         child:
-                            Text(DateFormat('yyyy.MM.dd').format(task.due), style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold)))));
+                            Text(DateFormat('yyyy.MM.dd').format(task.due), style: TextStyle(color: Theme.of(context).primaryColor)))));
               }
               list.add(TaskListElement(ValueKey(task.id), _taskBloc, task));
             });
@@ -104,14 +104,14 @@ class _TaskListState extends State<TaskList> {
           }
           return SafeArea(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 prioList.length > 0 && list.length > 0
                     ? Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left: 15.0, top: 40.0, bottom: 10.0),
                         child: Text(
                           "Continuous tasks",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                               color: Theme.of(context).primaryColor),
                         ),
@@ -123,14 +123,17 @@ class _TaskListState extends State<TaskList> {
                         : null,
                     shrinkWrap: true,
                     children: prioList),
+                SizedBox(height: 20.0),
                 prioList.length > 0 && list.length > 0
-                    ? Text(
-                        "Dated tasks",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                            color: Theme.of(context).primaryColor),
-                      )
+                    ? Padding(
+                      padding: const EdgeInsets.only(left: 15.0, top: 40.0, bottom: 10.0),
+                      child: Text(
+                          "Dated tasks",
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                    )
                     : SizedBox(height: 0),
                 ListView(
                   physics: widget.date != null

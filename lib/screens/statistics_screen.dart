@@ -11,11 +11,10 @@ import 'package:mylk/widgets/sum_widget.dart';
 List<StaggeredTile> _staggeredTiles = const <StaggeredTile>[
   StaggeredTile.count(1, 1),
   StaggeredTile.count(1, 1),
-  StaggeredTile.count(2, 1),
   StaggeredTile.count(1, 1),
   StaggeredTile.count(1, 1),
   StaggeredTile.count(2, 1),
-  StaggeredTile.count(1, 1)
+  StaggeredTile.count(2, 1)
 ];
 
 class StatisticsScreen extends StatefulWidget {
@@ -52,37 +51,37 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               StreamBuilder(
                   stream: _journalEntryBloc.journalEntries,
                   builder: (context, snapshot) {
-                    return SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Entries");
+                    return Card(child: SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Entries"));
                   }
               ),
               StreamBuilder(
                   stream: _taskBloc.tasks,
                   builder: (context, snapshot) {
-                    return SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Tasks");
+                    return Card(child: SumWidget(snapshot.data != null ? snapshot.data.length : 0, "Tasks"));
                   }
-              ),
-              StreamBuilder(
-                stream: _journalEntryBloc.journalEntries,
-                builder: (context, snapshot) {
-                  return (snapshot != null && snapshot.data != null) ? MoodChart(snapshot.data) : Container();
-                }
               ),
               StreamBuilder(
                   stream: _journalEntryBloc.journalEntries,
                   builder: (context, snapshot) {
-                    return (snapshot != null && snapshot.data != null) ? EntryChart(snapshot.data) : Container();
+                    return (snapshot != null && snapshot.data != null) ? Card(child: EntryChart(snapshot.data)) : Container();
                   }
               ),
               StreamBuilder(
                   stream: _taskBloc.tasks,
                   builder: (context, snapshot) {
-                    return (snapshot != null && snapshot.data != null) ? TaskChart(snapshot.data) : Container();
+                    return (snapshot != null && snapshot.data != null) ? Card(child: TaskChart(snapshot.data)) : Container();
                   }
               ),
               StreamBuilder(
                   stream: _journalEntryBloc.journalEntries,
                   builder: (context, snapshot) {
-                    return (snapshot != null && snapshot.data != null) ? MoodEntryChart(snapshot.data) : Container();
+                    return (snapshot != null && snapshot.data != null) ? Card(child: MoodChart(snapshot.data)) : Container();
+                  }
+              ),
+              StreamBuilder(
+                  stream: _journalEntryBloc.journalEntries,
+                  builder: (context, snapshot) {
+                    return (snapshot != null && snapshot.data != null) ? Card(child: MoodEntryChart(snapshot.data)) : Container();
                   }
               ),
               Container()

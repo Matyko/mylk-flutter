@@ -24,39 +24,39 @@ class TaskChart extends StatelessWidget {
       });
       _reducedData.forEach((key, value) => _chartData.add(DataPoint<DateTime>(value: value, xAxis: key)));
     }
-    return Card(
-      child: Container(
-        color: Theme.of(context).primaryColor,
-        child: Column(
-          children: <Widget>[
-            Padding(
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Completed tasks / day", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),),
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Completed tasks / day", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: (_chartData != null && _chartData.length != 0) ? BezierChart(
-                  bezierChartScale: BezierChartScale.WEEKLY,
-                  fromDate: new DateTime(taskList[0].createdAt.year, taskList[0].createdAt.month, taskList[0].createdAt.day, 0, 0),
-                  toDate: new DateTime(taskList[taskList.length - 1].createdAt.year, taskList[taskList.length - 1].createdAt.month, taskList[taskList.length - 1].createdAt.day, 23, 59),
-                  series: [
-                    BezierLine(
-                      data: _chartData,
-                    ),
-                  ],
-                  config: BezierChartConfig(
-                    verticalIndicatorStrokeWidth: 3.0,
-                    verticalIndicatorColor: Colors.black26,
-                    showVerticalIndicator: true,
-                    snap: false,
+              child: (_chartData != null && _chartData.length != 0) ? BezierChart(
+                bezierChartScale: BezierChartScale.WEEKLY,
+                fromDate: new DateTime(taskList[0].createdAt.year, taskList[0].createdAt.month, taskList[0].createdAt.day, 0, 0),
+                toDate: new DateTime(taskList[taskList.length - 1].createdAt.year, taskList[taskList.length - 1].createdAt.month, taskList[taskList.length - 1].createdAt.day, 23, 59),
+                series: [
+                  BezierLine(
+                    data: _chartData,
+                    lineColor: Theme.of(context).primaryColor
                   ),
-                ) : null,
-              ),
+                ],
+                config: BezierChartConfig(
+                  xAxisTextStyle: TextStyle(color: Theme.of(context).primaryColor, fontSize: 10.0),
+                  verticalIndicatorStrokeWidth: 3.0,
+                  verticalIndicatorColor: Colors.black26,
+                  showVerticalIndicator: true,
+                  snap: false,
+                ),
+              ) : null,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

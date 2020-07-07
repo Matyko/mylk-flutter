@@ -24,58 +24,58 @@ class MoodChart extends StatelessWidget {
       _reducedData.forEach((key, value) => _chartData.add(DataPoint<DateTime>(
           value: value.reduce((a, b) => a + b / value.length), xAxis: key)));
     }
-    return Card(
-      child: Container(
-        color: Theme.of(context).primaryColor,
-        child: Column(
-          children: <Widget>[
-            Padding(
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Mood chart",
+              style:
+                  TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Mood chart",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: (_chartData != null && _chartData.length != 0)
-                    ? BezierChart(
-                        bezierChartScale: BezierChartScale.WEEKLY,
-                        fromDate: new DateTime(
-                            journalEntries[0].date.year,
-                            journalEntries[0].date.month,
-                            journalEntries[0].date.day,
-                            0,
-                            0),
-                        toDate: new DateTime(
-                            journalEntries[journalEntries.length - 1].date.year,
-                            journalEntries[journalEntries.length - 1]
-                                .date
-                                .month,
-                            journalEntries[journalEntries.length - 1].date.day,
-                            23,
-                            59),
-                        series: [
-                          BezierLine(
-                            data: _chartData,
-                          ),
-                        ],
-                        config: BezierChartConfig(
-                          showDataPoints: false,
-                          verticalIndicatorStrokeWidth: 3.0,
-                          verticalIndicatorColor: Colors.black26,
-                          showVerticalIndicator: true,
-                          snap: false,
+              child: (_chartData != null && _chartData.length != 0)
+                  ? BezierChart(
+                      bezierChartScale: BezierChartScale.WEEKLY,
+                      fromDate: new DateTime(
+                          journalEntries[0].date.year,
+                          journalEntries[0].date.month,
+                          journalEntries[0].date.day,
+                          0,
+                          0),
+                      toDate: new DateTime(
+                          journalEntries[journalEntries.length - 1].date.year,
+                          journalEntries[journalEntries.length - 1]
+                              .date
+                              .month,
+                          journalEntries[journalEntries.length - 1].date.day,
+                          23,
+                          59),
+                      series: [
+                        BezierLine(
+                          data: _chartData,
+                          lineColor: Theme.of(context).primaryColor
                         ),
-                      )
-                    : null,
-              ),
+                      ],
+                      config: BezierChartConfig(
+                        xAxisTextStyle: TextStyle(color: Theme.of(context).primaryColor, fontSize: 10.0),
+                        showDataPoints: false,
+                        verticalIndicatorStrokeWidth: 3.0,
+                        verticalIndicatorColor: Colors.black26,
+                        showVerticalIndicator: true,
+                        snap: false,
+                      ),
+                    )
+                  : null,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

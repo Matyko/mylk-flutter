@@ -19,46 +19,46 @@ class MoodEntryChart extends StatelessWidget {
         }
       });
     }
-    return Card(
-      child: Container(
-        color: Theme.of(context).primaryColor,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
               child: Text(
                 "Mood breakdown",
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: (journalEntries != null && journalEntries.length != 0)
-                    ?  PieChart(
-                  dataMap: _chartData,
-                  legendStyle: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
-                  ),
-                  animationDuration: Duration(milliseconds: 0),
-                  chartValueStyle: defaultChartValueStyle.copyWith(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  colorList: <Color>[
-                    Colors.white,
-                    Colors.white70,
-                    Colors.white54,
-                    Colors.white38,
-                    Colors.white24
-                  ],
-                ) : null,
-              ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: (journalEntries != null && journalEntries.length != 0)
+                  ?  PieChart(
+                dataMap: _chartData,
+                legendStyle: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor
+                ),
+                animationDuration: Duration(milliseconds: 0),
+                chartValueStyle: defaultChartValueStyle.copyWith(
+                  color: Colors.white,
+                ),
+                colorList: <Color>[
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).primaryColor.withOpacity(0.8),
+                  Theme.of(context).primaryColor.withOpacity(0.6),
+                  Theme.of(context).primaryColor.withOpacity(0.4),
+                  Theme.of(context).primaryColor.withOpacity(0.2)
+                ],
+              ) : null,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

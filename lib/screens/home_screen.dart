@@ -69,11 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(message, style: TextStyle(color: Colors.white)),
+                        Text(message, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w100)),
                         Text(user.name,
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
+                                color: Colors.white)),
                       ],
                     ),
                   ),
@@ -90,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Tasks for today",
                       style: TextStyle(
                           fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor),
                     ),
                   ),
@@ -104,7 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Your journals",
                       style: TextStyle(
                           fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor),
                     ),
                   ),
